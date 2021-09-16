@@ -1,0 +1,130 @@
+Query: create user with(NND_1629017347714,abc123); , Error: Username: NND_1629017347714 already exists
+Query: create database 1629017347714 ; , Error: Database: 1629017347714 already exists under user: root
+Query: create table players (name string, age integer); , Error: Table: players under database: 1629017347714 already exists
+Query: create table balbla2(name varchar, age integer); , Error: Unsuported datatype: varchar
+Query: insert into players(Ronaldo, 30, 'Purtagal', 6.2, true); , Error: Value: Ronaldo is not a string value
+Query: insert into players('Ronaldo', abc, 'Purtagal', 6.2, true); , Error: abc is not a valid integer value. Error: For input string: "abc"
+Query: insert into players('Ronaldo', 30, 'Purtagal', 6.2, yes); , Error: yes is not a valid boolean value
+Query: create table Footballer (footBallerId integer, name string, clubId integer references NoSuchTable(clubId)); , Error: Foreign table: NoSuchTable doesn't exists
+Query: create table Footballer (footBallerId integer, name string, clubId integer references club(NoSuchClub)); , Error: Foreign column doesn't exists
+Query: create table Footballer (footBallerId integer primary key, name string, clubId integer references club(clubId)); , Error: Foreign table: club doesn't have any primary key.
+Query: create table Footballer (footBallerId integer primary key, name string, clubId integer references FootballClub(totalMembers)); , Error: Referenced foreign key is not primary key in the foreign table
+Query: insert into Footballer(1, 'Nuemar', 1); , Error: Duplicate primary key violation.Column: footBallerId, Value: 1
+Query: insert into Footballer(2, 'Messi', 100); , Error: Foreign key violation: Foreign table: FootballClub doesn't have value under column: footballClubId for the specified in the foreignKey: clubId
+Query: create user with(NND_1629026528919,abc123); , Error: Username: NND_1629026528919 already exists
+Query: create database 1629026528919 ; , Error: Database: 1629026528919 already exists under user: root
+Query: create table players (name string, age integer); , Error: Table: players under database: 1629026528919 already exists
+Query: create table balbla2(name varchar, age integer); , Error: Unsuported datatype: varchar
+Query: insert into players(Ronaldo, 30, 'Purtagal', 6.2, true); , Error: Value: Ronaldo is not a string value
+Query: insert into players('Ronaldo', abc, 'Purtagal', 6.2, true); , Error: abc is not a valid integer value. Error: For input string: "abc"
+Query: insert into players('Ronaldo', 30, 'Purtagal', 6.2, yes); , Error: yes is not a valid boolean value
+Query: create table Footballer (footBallerId integer, name string, clubId integer references NoSuchTable(clubId)); , Error: Foreign table: NoSuchTable doesn't exists
+Query: create table Footballer (footBallerId integer, name string, clubId integer references club(NoSuchClub)); , Error: Foreign column doesn't exists
+Query: create table Footballer (footBallerId integer primary key, name string, clubId integer references club(clubId)); , Error: Foreign table: club doesn't have any primary key.
+Query: create table Footballer (footBallerId integer primary key, name string, clubId integer references FootballClub(totalMembers)); , Error: Referenced foreign key is not primary key in the foreign table
+Query: insert into Footballer(1, 'Nuemar', 1); , Error: Duplicate primary key violation.Column: footBallerId, Value: 1
+Query: insert into Footballer(2, 'Messi', 100); , Error: Foreign key violation: Foreign table: FootballClub doesn't have value under column: footballClubId for the specified in the foreignKey: clubId
+Query: create user with(NND_1629044534847,abc123); , Error: Username: NND_1629044534847 already exists
+Query: create database 1629044534847 ; , Error: Database: 1629044534847 already exists under user: root
+Query: show databases; , Error: Invalid syntax: Token: database not found at index: 1
+Query: create table players (name string, age integer); , Error: Table: players under database: 1629044534847 already exists
+Query: create table balbla2(name varchar, age integer); , Error: Unsuported datatype: varchar
+Query: insert into players(Ronaldo, 30, 'Purtagal', 6.2, true); , Error: Value: Ronaldo is not a string value
+Query: insert into players('Ronaldo', abc, 'Purtagal', 6.2, true); , Error: abc is not a valid integer value. Error: For input string: "abc"
+Query: insert into players('Ronaldo', 30, 'Purtagal', 6.2, yes); , Error: yes is not a valid boolean value
+Query: create table Footballer (footBallerId integer, name string, clubId integer references NoSuchTable(clubId)); , Error: Foreign table: NoSuchTable doesn't exists
+Query: create table Footballer (footBallerId integer, name string, clubId integer references club(NoSuchClub)); , Error: Foreign column doesn't exists
+Query: create table Footballer (footBallerId integer primary key, name string, clubId integer references club(clubId)); , Error: Foreign table: club doesn't have any primary key.
+Query: create table Footballer (footBallerId integer primary key, name string, clubId integer references FootballClub(totalMembers)); , Error: Referenced foreign key is not primary key in the foreign table
+Query: insert into Footballer(1, 'Nuemar', 1); , Error: Duplicate primary key violation.Column: footBallerId, Value: 1
+Query: insert into Footballer(2, 'Messi', 100); , Error: Foreign key violation: Foreign table: FootballClub doesn't have value under column: footballClubId for the specified in the foreignKey: clubId
+Query: create user with(NND_1629091480341,abc123); , Error: Username: NND_1629091480341 already exists
+Query: create database 1629091480341 ; , Error: Database: 1629091480341 already exists under user: root
+Query: show databases; , Error: Invalid syntax: Token: database not found at index: 1
+Query: create table players (name string, age integer); , Error: Table: players under database: 1629091480341 already exists
+Query: create table balbla2(name varchar, age integer); , Error: Unsuported datatype: varchar
+Query: insert into players(Ronaldo, 30, 'Purtagal', 6.2, true); , Error: Value: Ronaldo is not a string value
+Query: insert into players('Ronaldo', abc, 'Purtagal', 6.2, true); , Error: abc is not a valid integer value. Error: For input string: "abc"
+Query: insert into players('Ronaldo', 30, 'Purtagal', 6.2, yes); , Error: yes is not a valid boolean value
+Query: create table Footballer (footBallerId integer, name string, clubId integer references NoSuchTable(clubId)); , Error: Foreign table: NoSuchTable doesn't exists
+Query: create table Footballer (footBallerId integer, name string, clubId integer references club(NoSuchClub)); , Error: Foreign column doesn't exists
+Query: create table Footballer (footBallerId integer primary key, name string, clubId integer references club(clubId)); , Error: Foreign table: club doesn't have any primary key.
+Query: create table Footballer (footBallerId integer primary key, name string, clubId integer references FootballClub(totalMembers)); , Error: Referenced foreign key is not primary key in the foreign table
+Query: insert into Footballer(1, 'Nuemar', 1); , Error: Duplicate primary key violation.Column: footBallerId, Value: 1
+Query: insert into Footballer(2, 'Messi', 100); , Error: Foreign key violation: Foreign table: FootballClub doesn't have value under column: footballClubId for the specified in the foreignKey: clubId
+Query: create user with(NND_1629091753790,abc123); , Error: Username: NND_1629091753790 already exists
+Query: create database 1629091753790 ; , Error: Database: 1629091753790 already exists under user: root
+Query: show databases; , Error: Invalid syntax: Token: database not found at index: 1
+Query: create table players (name string, age integer); , Error: Table: players under database: 1629091753790 already exists
+Query: create table balbla2(name varchar, age integer); , Error: Unsuported datatype: varchar
+Query: insert into players(Ronaldo, 30, 'Purtagal', 6.2, true); , Error: Value: Ronaldo is not a string value
+Query: insert into players('Ronaldo', abc, 'Purtagal', 6.2, true); , Error: abc is not a valid integer value. Error: For input string: "abc"
+Query: insert into players('Ronaldo', 30, 'Purtagal', 6.2, yes); , Error: yes is not a valid boolean value
+Query: create table Footballer (footBallerId integer, name string, clubId integer references NoSuchTable(clubId)); , Error: Foreign table: NoSuchTable doesn't exists
+Query: create table Footballer (footBallerId integer, name string, clubId integer references club(NoSuchClub)); , Error: Foreign column doesn't exists
+Query: create table Footballer (footBallerId integer primary key, name string, clubId integer references club(clubId)); , Error: Foreign table: club doesn't have any primary key.
+Query: create table Footballer (footBallerId integer primary key, name string, clubId integer references FootballClub(totalMembers)); , Error: Referenced foreign key is not primary key in the foreign table
+Query: insert into Footballer(1, 'Nuemar', 1); , Error: Duplicate primary key violation.Column: footBallerId, Value: 1
+Query: insert into Footballer(2, 'Messi', 100); , Error: Foreign key violation: Foreign table: FootballClub doesn't have value under column: footballClubId for the specified in the foreignKey: clubId
+Query: create user with(NND_1629091894605,abc123); , Error: Username: NND_1629091894605 already exists
+Query: create database 1629091894605 ; , Error: Database: 1629091894605 already exists under user: root
+Query: show databases; , Error: Invalid syntax: Token: database not found at index: 1
+Query: create table players (name string, age integer, country string, height double, isChampion boolean); , Error: Invalid syntax
+Query: create table players (name string, age integer); , Error: Invalid syntax
+Query: create table balbla2(name varchar, age integer); , Error: Invalid syntax
+Query: insert into players('Ronaldo', 30, 'Purtagal', 6.2, true); , Error: Table: players doesn't exist under the database: 1629091894605
+Query: insert into players('Villa', 40, 'Spain', 5.9, false); , Error: Table: players doesn't exist under the database: 1629091894605
+Query: insert into players('Messi', 28, 'Argentina', 5.8, true); , Error: Table: players doesn't exist under the database: 1629091894605
+Query: insert into players('Maradona', 50, 'Argentina', 5.6, true); , Error: Table: players doesn't exist under the database: 1629091894605
+Query: insert into players(Ronaldo, 30, 'Purtagal', 6.2, true); , Error: Table: players doesn't exist under the database: 1629091894605
+Query: insert into players('Ronaldo', abc, 'Purtagal', 6.2, true); , Error: Table: players doesn't exist under the database: 1629091894605
+Query: insert into players('Ronaldo', 30, 'Purtagal', 6.2, yes); , Error: Table: players doesn't exist under the database: 1629091894605
+Query: select * from players; , Error: Table: players doesn't exist under the database: 1629091894605
+Query: select * from players where name='Messi'; , Error: Table: players doesn't exist under the database: 1629091894605
+Query: select * from players where age=40; , Error: Table: players doesn't exist under the database: 1629091894605
+Query: select * from players where isChampion=true; , Error: Table: players doesn't exist under the database: 1629091894605
+Query: select * from players where height=5.9; , Error: Table: players doesn't exist under the database: 1629091894605
+Query: select * from players where age > 35; , Error: Table: players doesn't exist under the database: 1629091894605
+Query: select * from players where age < 35; , Error: Table: players doesn't exist under the database: 1629091894605
+Query: select * from players where isChampion=true and age=30; , Error: Table: players doesn't exist under the database: 1629091894605
+Query: select * from players where isChampion=true or age=30; , Error: Table: players doesn't exist under the database: 1629091894605
+Query: insert into players('Blabala1', 30, 'Akha', 6.2, true); , Error: Table: players doesn't exist under the database: 1629091894605
+Query: insert into players('Glagla1', 40, 'Lakha', 5.9, false); , Error: Table: players doesn't exist under the database: 1629091894605
+Query: select * from players; , Error: Table: players doesn't exist under the database: 1629091894605
+Query: insert into players('aborted_player', 30, 'aborted', 6.2, true); , Error: Table: players doesn't exist under the database: 1629091894605
+Query: select * from players; , Error: Table: players doesn't exist under the database: 1629091894605
+Query: update players set age=32 where name='Messi'; , Error: Table: players doesn't exist under the database: 1629091894605
+Query: select * from players; , Error: Table: players doesn't exist under the database: 1629091894605
+Query: update players set age=60 where country='Argentina' and height=5.6; , Error: Table: players doesn't exist under the database: 1629091894605
+Query: select * from players; , Error: Table: players doesn't exist under the database: 1629091894605
+Query: alter table players add column weight double; , Error: Cannot invoke "com.devrajs.tinydb.model.Table.getColumnAndItsTypes()" because "table" is null
+Query: select * from players; , Error: Table: players doesn't exist under the database: 1629091894605
+Query: alter table players drop column weight; , Error: Cannot invoke "com.devrajs.tinydb.model.Table.getColumnAndItsTypes()" because "table" is null
+Query: select * from players; , Error: Table: players doesn't exist under the database: 1629091894605
+Query: create table club (clubId integer, name string, origin string); , Error: Invalid syntax
+Query: create table FootballClub (footballClubId integer primary key, name string, origin string, totalMembers integer); , Error: Invalid syntax: Token: key not found at index: 6
+Query: create table Footballer (footBallerId integer, name string, clubId integer references NoSuchTable(clubId)); , Error: Invalid syntax
+Query: create table Footballer (footBallerId integer, name string, clubId integer references club(NoSuchClub)); , Error: Invalid syntax
+Query: create table Footballer (footBallerId integer primary key, name string, clubId integer references club(clubId)); , Error: Invalid syntax: Token: key not found at index: 6
+Query: create table Footballer (footBallerId integer primary key, name string, clubId integer references FootballClub(totalMembers)); , Error: Invalid syntax: Token: key not found at index: 6
+Query: create table Footballer (footBallerId integer primary key, name string, clubId integer references FootballClub(footballClubId)); , Error: Invalid syntax: Token: key not found at index: 6
+Query: insert into FootballClub(1, 'MadridClub', 'Spain', 1000); , Error: Table: FootballClub doesn't exist under the database: 1629091894605
+Query: insert into Footballer(1, 'Nuemar', 1); , Error: Table: Footballer doesn't exist under the database: 1629091894605
+Query: insert into Footballer(1, 'Nuemar', 1); , Error: Table: Footballer doesn't exist under the database: 1629091894605
+Query: insert into Footballer(2, 'Messi', 100); , Error: Table: Footballer doesn't exist under the database: 1629091894605
+Query: create user with(NND_1629093029199,abc123); , Error: Username: NND_1629093029199 already exists
+Query: create database 1629093029199 ; , Error: Database: 1629093029199 already exists under user: root
+Query: show databases; , Error: Invalid syntax: Token: database not found at index: 1
+Query: create table players (name string, age integer); , Error: Table: players under database: 1629093029199 already exists
+Query: create table balbla2(name varchar, age integer); , Error: Unsuported datatype: varchar
+Query: insert into players(Ronaldo, 30, 'Purtagal', 6.2, true); , Error: Value: Ronaldo is not a string value
+Query: insert into players('Ronaldo', abc, 'Purtagal', 6.2, true); , Error: abc is not a valid integer value. Error: For input string: "abc"
+Query: insert into players('Ronaldo', 30, 'Purtagal', 6.2, yes); , Error: yes is not a valid boolean value
+Query: update players set age=32 where name='Messi'; , Error: Invalid operation: 'Messi'
+Query: update players set age=60 where country='Argentina' and height=5.6; , Error: Invalid operation: 'Argentina'
+Query: create table Footballer (footBallerId integer, name string, clubId integer references NoSuchTable(clubId)); , Error: Foreign table: NoSuchTable doesn't exists
+Query: create table Footballer (footBallerId integer, name string, clubId integer references club(NoSuchClub)); , Error: Foreign column doesn't exists
+Query: create table Footballer (footBallerId integer primary key, name string, clubId integer references club(clubId)); , Error: Foreign table: club doesn't have any primary key.
+Query: create table Footballer (footBallerId integer primary key, name string, clubId integer references FootballClub(totalMembers)); , Error: Referenced foreign key is not primary key in the foreign table
+Query: insert into Footballer(1, 'Nuemar', 1); , Error: Duplicate primary key violation.Column: footBallerId, Value: 1
+Query: insert into Footballer(2, 'Messi', 100); , Error: Foreign key violation: Foreign table: FootballClub doesn't have value under column: footballClubId for the specified in the foreignKey: clubId
