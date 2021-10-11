@@ -1,7 +1,10 @@
 package com.devrajs.tinydb.manager;
 
-import com.devrajs.tinydb.model.*;
 import com.devrajs.tinydb.common.AlterTableParameters;
+import com.devrajs.tinydb.model.Database;
+import com.devrajs.tinydb.model.ERD;
+import com.devrajs.tinydb.model.Table;
+import com.devrajs.tinydb.model.User;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -12,8 +15,7 @@ import java.util.Map;
 public class DBMetadata {
     private Map<String, User> mapOfUsernameAndUser;
     private List<ERD> erdList;
-    private final String metafile = "dumps/metadata.txt";
-    private final String metaERDfile = "dumps/erd/";
+    private final String metafile = FileConstants.METADATA_FILE;
     private static DBMetadata dbMetadata;
 
     public static DBMetadata getInstance() throws IOException, ClassNotFoundException {
@@ -27,10 +29,10 @@ public class DBMetadata {
         File file = new File(metafile);
         if (file.exists() && file.length() == 0) {
             mapOfUsernameAndUser = new HashMap<>();
-            erdList = new ArrayList<ERD>();
+            erdList = new ArrayList<>();
             createRootUser();
         }
-        erdList = new ArrayList<ERD>();
+        erdList = new ArrayList<>();
         fetchContent();
     }
 
@@ -197,16 +199,14 @@ public class DBMetadata {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            // System.out.println(table.getTableName() +" ---> " +keys.get(0) +"(FK) <--->"
-            // +keys.get(1) +"----> " +keys.get(2) +"(PK)");
         }
         erdList.clear();
         System.out.println("ERD generated!!");
     }
 
     public void updateContentERD(String databaseName, List<Table> tableList) throws IOException {
-
-        String fileName = metaERDfile + databaseName + ".txt";
+        String metaERDfile = FileConstants.ERD_DIR;
+        String fileName = metaERDfile + "/" + databaseName + ".txt";
         File file = new File(fileName);
 
         if (file.exists()) {

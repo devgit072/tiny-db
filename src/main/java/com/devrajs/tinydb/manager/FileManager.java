@@ -10,7 +10,7 @@ public class FileManager {
 
     public static void createAllDirectoriesAndFiles() throws IOException {
         createLogDirAndFiles();
-        createDumpsDirAndFiles();
+        createDataDirAndFiles();
         createERDDirectoryAndFiles();
     }
 
@@ -22,8 +22,8 @@ public class FileManager {
         createFile(TRANSACTION_LOG);
     }
 
-    private static void createDumpsDirAndFiles() throws IOException {
-        createDirectory(DUMP_DIR);
+    private static void createDataDirAndFiles() throws IOException {
+        createDirectory(DATA_DIR);
         createFile(CONTENT_FILE);
         createFile(LOCK_FILE);
         createFile(METADATA_FILE);

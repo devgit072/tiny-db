@@ -54,6 +54,7 @@ public class QueryProcessor {
         String secondWord = tokens.get(index + 1);
         String firstTwoWord = String.format("%s %s", firstWord, secondWord);
 
+        // TODO Remove hardcode.
         if (firstWord.equalsIgnoreCase("-u")) {
             new Userlogin(this).processTokens();
         } else if (firstWord.equalsIgnoreCase("select")) {

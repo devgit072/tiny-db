@@ -10,7 +10,7 @@ involved in the transaction.
 public class LockManager {
     private static Map<String, Boolean> tableIdLockMap;
     private static List<String> listOfTableLocked;
-    private static final String lockFile = "dumps/locks.txt";
+    private static final String lockFile = FileConstants.LOCK_FILE;
     private static String lockOwner="--";
 
     public static void init() throws IOException, ClassNotFoundException {

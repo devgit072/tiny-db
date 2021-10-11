@@ -14,7 +14,7 @@ import java.util.*;
 
 public class DBContents {
     private static Map<String, TableContent> tableIdToTableContentMap;
-    private static final String contentFile = "dumps/content.txt";
+    private static final String contentFile = FileConstants.CONTENT_FILE;
 
     public Map<String, TableContent> getTableContentMap() {
         return tableIdToTableContentMap;

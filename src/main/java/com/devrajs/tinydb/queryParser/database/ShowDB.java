@@ -8,7 +8,7 @@ import java.io.IOException;
 import java.util.List;
 
 /*
-drop database 'testDB';
+show databases;
 */
 
 public class ShowDB {
@@ -22,10 +22,10 @@ public class ShowDB {
 
     public void processTokens() throws IOException, ClassNotFoundException {
         if (tokenList.size() != 3) {
-            throw new RuntimeException("Invalid syntax");
+            throw new RuntimeException("Invalid syntax. Expected syntax: show database;");
         }
         TokensValidator tokensValidator = new TokensValidator(tokenList);
-        tokensValidator.add("show", 0).add("database", 1).validate();
+        tokensValidator.add("show", 0).add("databases", 1).validate();
         DBMetadata.getInstance().showDB();
     }
 }
