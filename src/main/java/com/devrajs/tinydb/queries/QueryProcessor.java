@@ -116,4 +116,10 @@ public class QueryProcessor {
     public IInputs getInputs() {
         return inputs;
     }
+
+    public static void main(String[] args) throws NoSuchAlgorithmException, IOException, ClassNotFoundException {
+        String query = "update players set age=32 where name='Messi';";
+        QueryProcessor a = new QueryProcessor(query);
+        a.parseQuery();
+    }
 }

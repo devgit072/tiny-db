@@ -13,7 +13,6 @@ public class DumpManager {
 
     }
 
-
     public void dumpDatabase(String databaseName, boolean withData) {
         System.out.println("Not implemented.");
     }

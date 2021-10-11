@@ -42,7 +42,7 @@ public class UpdateTable {
             } else if (tokenList.get(i).equalsIgnoreCase("where")) {
                 i++;
                 String conditionColumnName1 = tokenList.get(i++);
-                validator.add("=", i++).validate();
+                validator.add("=", i).validate();
                 SIGN mathOperator1 = MathOperators.valueOf(tokenList.get(i++));
                 String columnValue1 = tokenList.get(i++);
                 conditions.add(new Condition(conditionColumnName1, columnValue1, mathOperator1));
@@ -55,7 +55,7 @@ public class UpdateTable {
                         throw new RuntimeException("Invalid syntax");
                     }
                     String conditionColumnName2 = tokenList.get(i++);
-                    validator.add("=", i++).validate();
+                    validator.add("=", i).validate();
                     SIGN mathOperator2 = MathOperators.valueOf(tokenList.get(i++));
                     String columnValue2 = tokenList.get(i++);
                     conditions.add(new Condition(conditionColumnName2, columnValue2, mathOperator2));
@@ -67,7 +67,6 @@ public class UpdateTable {
                 break;
             }
         }
-
         DBContents.updateTable(tableName, conditions, operator, columns, columnValues);
     }
 }

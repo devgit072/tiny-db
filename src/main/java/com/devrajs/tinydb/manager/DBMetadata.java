@@ -178,7 +178,6 @@ public class DBMetadata {
     }
 
     public void createERD(String databaseName) {
-
         User user = StateManager.getCurrentUser();
         Database db = user.getDatabase(databaseName);
         List<Table> tableslIst = db.getTableList();
@@ -213,14 +212,11 @@ public class DBMetadata {
             file.delete();
         }
 
-        FileWriter fileWriter = new FileWriter(metaERDfile + databaseName + ".txt");
+        FileWriter fileWriter = new FileWriter(fileName);
         fileWriter.write("Database = " + databaseName + "\n");
 
         for (Table table : tableList) {
             fileWriter.write("Table Name = " + table.getTableName() + "\n");
-            /*for (String key : table.getColumnAndItsTypes().keySet()) {
-                fileWriter.write(key + " : " + table.getColumnAndItsTypes().get(key) + "\n");
-            }*/
             fileWriter.write(table.asString());
             fileWriter.write("\n\n");
         }

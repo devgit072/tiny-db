@@ -80,11 +80,12 @@ public class QueryExecutorTest {
         inputs.add("insert into Footballer(2, 'Messi', 100);"); // foreign key violation
         inputs.add(String.format("dump database %s false;", dbName));
         inputs.add(String.format("dump database %s true;", dbName));
-        String sqlDumpFile = getMostRecentFile();
         String dumpRestoreDB = "dumpRestoreDB_"+epochTime;
         inputs.add(String.format("create database %s;", dumpRestoreDB));
         inputs.add(String.format("use %s;", dumpRestoreDB));
-        inputs.add(String.format("source dump %s;", sqlDumpFile));
+        // TODO Implement it.
+        //String sqlDumpFile = getMostRecentFile();
+        //inputs.add(String.format("source dump %s;", sqlDumpFile));
         inputs.add(String.format("use %s;", dbName));
         inputs.add(String.format("create erd %s;",dbName ));
         inputs.add("q");
