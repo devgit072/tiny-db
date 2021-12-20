@@ -6,6 +6,7 @@ import com.devrajs.tinydb.model.Table;
 import com.devrajs.tinydb.model.User;
 import com.devrajs.tinydb.queries.QueryProcessor;
 
+import javax.xml.crypto.Data;
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
@@ -18,7 +19,7 @@ public class DumpManager {
         Database database = user.getDatabase(databaseName);
         List<String> dumpQueries = getDumpQueries(database);
         if (withData) {
-            getTableContentQueries();
+            getTablesContentQueries(database);
         }
 
         String filePath = String.format("SQLDump/%s.sql", databaseName);
@@ -69,8 +70,21 @@ public class DumpManager {
         return tableQuery.toString();
     }
 
-    private String getTableContentQueries() {
-        return "Not implemented now";
+    private List<String> getTablesContentQueries(Database database) {
+        List<Table> tableList = database.getTableList();
+        List<String> queryList = new ArrayList<>();
+        for (Table table : tableList) {
+            String tableQuery = addTable(table);
+            queryList.add(tableQuery);
+            queryList.add(System.lineSeparator());
+        }
+        return queryList;
+    }
+
+    private List<String> getTableContentQuery(Table table) throws IOException, ClassNotFoundException {
+        Map<String, String> columnAndItsTypes = table.getColumnAndItsTypes();
+        DBContents dbContents = DBContents.getInstance();
+        return null;
     }
 
     public void sourceDump(String fileName, String databaseName) throws IOException, NoSuchAlgorithmException, ClassNotFoundException {

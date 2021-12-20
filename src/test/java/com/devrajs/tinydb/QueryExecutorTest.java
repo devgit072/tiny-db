@@ -2,17 +2,33 @@ package com.devrajs.tinydb;
 
 import com.devrajs.tinydb.inputs.StoredInputs;
 import com.devrajs.tinydb.queries.QueryExecutor;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 
-import java.io.File;
 import java.io.IOException;
+import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Stream;
 
 public class QueryExecutorTest {
+    static List<String> inputs;
+    static StoredInputs storedInputs;
+    static QueryExecutor queryExecutor;
 
-    @Test
-    void userLogin() throws IOException, ClassNotFoundException {
+    @BeforeAll
+    public static void init() throws IOException, NoSuchAlgorithmException, ClassNotFoundException {
+        inputs = new ArrayList<>();
+        storedInputs = new StoredInputs();
+        queryExecutor = new QueryExecutor(storedInputs);
+        queryExecutor.init();
+        inputProviders();
+    }
+
+    static Stream<String> inputProviders() throws IOException, ClassNotFoundException, NoSuchAlgorithmException {
         String epochTime = String.valueOf(System.currentTimeMillis());
-        StoredInputs inputs = new StoredInputs();
+        //StoredInputs inputs = new StoredInputs();
         inputs.add("-u root -p root123");
         inputs.add("create user with(NND_" + epochTime + ",abc123);");
         inputs.add("tommy123");
@@ -80,36 +96,27 @@ public class QueryExecutorTest {
         inputs.add("insert into Footballer(2, 'Messi', 100);"); // foreign key violation
         inputs.add(String.format("dump database %s false;", dbName));
         inputs.add(String.format("dump database %s true;", dbName));
-        String dumpRestoreDB = "dumpRestoreDB_"+epochTime;
+        String dumpRestoreDB = "dumpRestoreDB_" + epochTime;
         inputs.add(String.format("create database %s;", dumpRestoreDB));
         inputs.add(String.format("use %s;", dumpRestoreDB));
         // TODO Implement it.
         //String sqlDumpFile = getMostRecentFile();
         //inputs.add(String.format("source dump %s;", sqlDumpFile));
         inputs.add(String.format("use %s;", dbName));
-        inputs.add(String.format("create erd %s;",dbName ));
+        inputs.add(String.format("create erd %s;", dbName));
         inputs.add("q");
-        QueryExecutor queryExecutor = new QueryExecutor(inputs);
-        queryExecutor.startApplication();
+        return inputs.stream();
+        //QueryExecutor queryExecutor = new QueryExecutor(inputs);
+        //queryExecutor.startApplication();
     }
 
-    String getMostRecentFile() {
-        File sqlDumpDir = new File("SQLDump");
-        if(!sqlDumpDir.exists()) {
-            throw new RuntimeException("SQL dump folder doesn exists");
+    @ParameterizedTest
+    @MethodSource("inputProviders")
+    public void testQueries(String input) {
+        try {
+            queryExecutor.processQuery(input);
+        } catch (IOException | ClassNotFoundException | NoSuchAlgorithmException e) {
+            e.printStackTrace();
         }
-        File[] files = sqlDumpDir.listFiles();
-        if (files == null) {
-            throw new RuntimeException("No file exists");
-        }
-        long recentTime = Long.MIN_VALUE;
-        String mostRecentFile = "";
-        for (File file : files) {
-            long lastModifiedTime = file.lastModified();
-            if (lastModifiedTime > recentTime) {
-                mostRecentFile = file.getAbsolutePath();
-            }
-        }
-        return mostRecentFile;
     }
 }

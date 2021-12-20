@@ -1,12 +1,12 @@
 package com.devrajs.tinydb.manager;
 
-import com.devrajs.tinydb.model.Database;
-import com.devrajs.tinydb.model.Table;
-import com.devrajs.tinydb.model.TableContent;
 import com.devrajs.tinydb.common.Condition;
 import com.devrajs.tinydb.common.Operator;
 import com.devrajs.tinydb.common.Printer;
 import com.devrajs.tinydb.common.SIGN;
+import com.devrajs.tinydb.model.Database;
+import com.devrajs.tinydb.model.Table;
+import com.devrajs.tinydb.model.TableContent;
 
 import java.io.*;
 import java.rmi.RemoteException;
@@ -15,9 +15,17 @@ import java.util.*;
 public class DBContents {
     private static Map<String, TableContent> tableIdToTableContentMap;
     private static final String contentFile = FileConstants.CONTENT_FILE;
+    private static DBContents dbContents;
 
-    public Map<String, TableContent> getTableContentMap() {
-        return tableIdToTableContentMap;
+    public static DBContents getInstance() throws IOException, ClassNotFoundException {
+        if (dbContents == null) {
+            dbContents = new DBContents();
+        }
+        return dbContents;
+    }
+
+    private DBContents() throws IOException, ClassNotFoundException {
+        init();
     }
 
     public static void init() throws IOException, ClassNotFoundException {
@@ -236,14 +244,14 @@ public class DBContents {
                 conditionTestResult[i] = columnValue1.equals(actualValue);
             } else if (sign == SIGN.NOT_EQUAL) {
                 conditionTestResult[i] = !columnValue1.equals(actualValue);
-            } else if(sign == SIGN.GREATER_THAN) {
-                conditionTestResult[i] = columnValue1.compareTo(actualValue)<0;
-            } else if(sign == SIGN.LESSER_THAN) {
-                conditionTestResult[i] = columnValue1.compareTo(actualValue)>0;
-            }else if(sign == SIGN.GREATER_THAN_EQUAL_TO) {
-                conditionTestResult[i] = columnValue1.compareTo(actualValue)<=0;
-            } else if(sign == SIGN.LESSER_THAN_EQUAL_TO) {
-                conditionTestResult[i] = columnValue1.compareTo(actualValue)>=0;
+            } else if (sign == SIGN.GREATER_THAN) {
+                conditionTestResult[i] = columnValue1.compareTo(actualValue) < 0;
+            } else if (sign == SIGN.LESSER_THAN) {
+                conditionTestResult[i] = columnValue1.compareTo(actualValue) > 0;
+            } else if (sign == SIGN.GREATER_THAN_EQUAL_TO) {
+                conditionTestResult[i] = columnValue1.compareTo(actualValue) <= 0;
+            } else if (sign == SIGN.LESSER_THAN_EQUAL_TO) {
+                conditionTestResult[i] = columnValue1.compareTo(actualValue) >= 0;
             } else {
                 throw new RuntimeException("Operator not supported yet: " + operator.toString());
             }
@@ -330,15 +338,15 @@ public class DBContents {
 
     private static void checkColumnContentAndColumnType(List<String> columnTypeList, List<String> columnValueList) {
         int index = 0;
-        for(index=0;index < columnTypeList.size(); index++) {
+        for (index = 0; index < columnTypeList.size(); index++) {
             String columnValue = columnValueList.get(index);
             String columnType = columnTypeList.get(index);
             Helper.isColumnTypeSupported(columnType);
-            if(columnType.equalsIgnoreCase("string")) {
+            if (columnType.equalsIgnoreCase("string")) {
                 Helper.isString(columnValue);
             } else if (columnType.equalsIgnoreCase("boolean")) {
                 Helper.isBoolean(columnValue);
-            } else if(columnType.equalsIgnoreCase("integer")) {
+            } else if (columnType.equalsIgnoreCase("integer")) {
                 Helper.isInteger(columnValue);
             } else if (columnType.equalsIgnoreCase("double")) {
                 Helper.isDouble(columnValue);
@@ -350,7 +358,7 @@ public class DBContents {
 
     public static void checkForeignKeyViolation(Table table, Map<String, Object> row) {
         List<String> fkValues = table.getForeignKeysForeignTableAndColumn();
-        if(fkValues.isEmpty()) {
+        if (fkValues.isEmpty()) {
             return;
         }
         String foreignKey = fkValues.get(0);
@@ -358,16 +366,16 @@ public class DBContents {
         String foreignColumn = fkValues.get(2);
         Database currentDB = StateManager.getCurrentDB();
         Table foreignTable = currentDB.getTable(foreignTableName);
-        if(!tableIdToTableContentMap.containsKey(foreignTable.getTableId())) {
+        if (!tableIdToTableContentMap.containsKey(foreignTable.getTableId())) {
             throw new RuntimeException(String.format(
                     "Foreign key violation: Foreign table: %s doesn't have value under column: %s for the specified in the foreignKey: %s", foreignTableName, foreignColumn, foreignKey));
         }
         TableContent foreignTableContent = tableIdToTableContentMap.get(foreignTable.getTableId());
         List<Map<String, Object>> foreignTableRows = foreignTableContent.getRows();
         String hostTableForeignKeyValue = row.get(foreignKey).toString();
-        for(Map<String, Object> foreignTableRow : foreignTableRows) {
+        for (Map<String, Object> foreignTableRow : foreignTableRows) {
             String foreignTableFKValue = foreignTableRow.get(foreignColumn).toString();
-            if(hostTableForeignKeyValue.equals(foreignTableFKValue)) {
+            if (hostTableForeignKeyValue.equals(foreignTableFKValue)) {
                 return;
             }
         }

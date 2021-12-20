@@ -15,21 +15,21 @@ import static com.devrajs.tinydb.manager.StateManager.SLEEP_TIME;
 
 public class QueryExecutor {
     private final IInputs inputs;
+    private boolean debugMode = false;
 
     public QueryExecutor(IInputs inputs) {
         this.inputs = inputs;
     }
 
-    public void startApplication() throws IOException, ClassNotFoundException {
+    public void init() throws IOException, ClassNotFoundException, NoSuchAlgorithmException {
         FileManager.createAllDirectoriesAndFiles();
         DBMetadata.getInstance();
         System.out.println("Welcome to tiny-db.");
         System.out.println("Please login to continue using NND database using this simple syntax: ");
         System.out.println("-u <userName> -p <password>");
-        executeQuery();
     }
 
-    private void executeQuery() throws IOException {
+    public void executeQueries() throws IOException, NoSuchAlgorithmException, ClassNotFoundException {
         while (true) {
             if (SLEEP_TIME != 0) {
                 justSleep();
@@ -41,6 +41,7 @@ public class QueryExecutor {
                 break;
             }
             try {
+                // If inputs is instance of StoredInputs, then print the input in the console.
                 if (inputs instanceof StoredInputs) {
                     System.out.println(userQuery);
                 }
@@ -51,13 +52,21 @@ public class QueryExecutor {
                 LogManager.writeErrorLog(userQuery, e.getMessage());
                 System.out.println("\n");
                 System.out.println("Exception for query: " + userQuery);
-                e.printStackTrace();
+                if(debugMode) {
+                    //e.printStackTrace();
+                    throw e;
+                }
             }
         }
     }
 
-    void processQuery(String q) throws NoSuchAlgorithmException, IOException, ClassNotFoundException {
+    void processQuery(String q, IInputs inputs) throws NoSuchAlgorithmException, IOException, ClassNotFoundException {
         QueryProcessor queryProcessor = new QueryProcessor(q, inputs);
+        queryProcessor.parseQuery();
+    }
+
+    public void processQuery(String q) throws NoSuchAlgorithmException, IOException, ClassNotFoundException {
+        QueryProcessor queryProcessor = new QueryProcessor(q);
         queryProcessor.parseQuery();
     }
 
@@ -67,5 +76,9 @@ public class QueryExecutor {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+    }
+
+    public void setDebugMode(boolean value) {
+        debugMode = value;
     }
 }
