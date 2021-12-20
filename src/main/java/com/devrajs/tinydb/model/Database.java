@@ -96,12 +96,12 @@ public class Database implements Serializable {
         if(!foreignTable.hasColumn(foreignColumn)) {
             throw new RuntimeException("Foreign column doesn't exists");
         }
-        List<String> foreignTabePKs = foreignTable.getPrimaryKeyColumns();
-        if (foreignTabePKs.isEmpty()) {
+        List<String> foreignTableePKs = foreignTable.getPrimaryKeyColumns();
+        if (foreignTableePKs.isEmpty()) {
             throw new RuntimeException(String.format("Foreign table: %s doesn't have any primary key.", foreignTableName));
         }
         // check is foreign key is primary key in foreign table.
-        if(!isPresentInTheList(foreignColumn, foreignTabePKs)) {
+        if(!isPresentInTheList(foreignColumn, foreignTableePKs)) {
             throw new RuntimeException("Referenced foreign key is not primary key in the foreign table");
         }
     }

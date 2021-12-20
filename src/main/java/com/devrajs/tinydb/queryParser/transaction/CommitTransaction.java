@@ -7,11 +7,11 @@ import com.devrajs.tinydb.tokens.TokensValidator;
 import java.io.IOException;
 import java.util.List;
 
-public class CommitTrasaction {
+public class CommitTransaction {
     QueryProcessor queryProcessor;
     List<String> tokenList;
 
-    public CommitTrasaction(QueryProcessor queryProcessor) {
+    public CommitTransaction(QueryProcessor queryProcessor) {
         this.queryProcessor = queryProcessor;
         this.tokenList = queryProcessor.getTokenList();
     }

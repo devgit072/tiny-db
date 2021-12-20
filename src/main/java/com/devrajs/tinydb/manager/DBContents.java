@@ -41,7 +41,7 @@ public class DBContents {
         if (LockManager.isTableLocked(tableId)) {
             throw new RuntimeException(String.format("Table: %s is locked due to other ongoing transaction", table.getTableName()));
         }
-        LockManager.lockTableIfTrasactionIsOn(tableId);
+        LockManager.lockTableIfTransactionIsOn(tableId);
         TableContent tableContent;
         if (tableIdToTableContentMap.containsKey(tableId)) {
             tableContent = tableIdToTableContentMap.get(tableId);
@@ -73,7 +73,7 @@ public class DBContents {
     private static Map<String, Object> prepareRow(List<String> values, List<String> columns) {
         Map<String, Object> row = new HashMap<>();
         if (values.size() != columns.size()) {
-            throw new RuntimeException("Number of columnns and values mismatched");
+            throw new RuntimeException("Number of columns and values mismatched");
         }
         int i = 0;
         while (i < values.size()) {
@@ -149,7 +149,7 @@ public class DBContents {
         if (LockManager.isTableLocked(tableId)) {
             throw new RuntimeException("Table is locked");
         }
-        LockManager.lockTableIfTrasactionIsOn(tableId);
+        LockManager.lockTableIfTransactionIsOn(tableId);
         TableContent tableContent;
         if (tableIdToTableContentMap.containsKey(tableId)) {
             tableContent = tableIdToTableContentMap.get(tableId);
@@ -185,7 +185,7 @@ public class DBContents {
         if (LockManager.isTableLocked(tableId)) {
             throw new RuntimeException("Table is locked");
         }
-        LockManager.lockTableIfTrasactionIsOn(tableId);
+        LockManager.lockTableIfTransactionIsOn(tableId);
         TableContent tableContent;
         if (tableIdToTableContentMap.containsKey(tableId)) {
             tableContent = tableIdToTableContentMap.get(tableId);
@@ -272,7 +272,7 @@ public class DBContents {
         if (LockManager.isTableLocked(tableId)) {
             throw new RuntimeException("Table is locked");
         }
-        LockManager.lockTableIfTrasactionIsOn(tableId);
+        LockManager.lockTableIfTransactionIsOn(tableId);
         TableContent tableContent;
         if (tableIdToTableContentMap.containsKey(tableId)) {
             tableContent = tableIdToTableContentMap.get(tableId);
@@ -299,7 +299,7 @@ public class DBContents {
         StateManager.is_transaction_on = false;
         updateRam();
         LockManager.unlockAllTable();
-        Printer.printSuccess("TRANSACTION ROLLEDBACK");
+        Printer.printSuccess("TRANSACTION ROLLBACK");
     }
 
     private static void updateDisk() throws IOException {

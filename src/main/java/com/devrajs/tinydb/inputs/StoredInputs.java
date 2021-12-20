@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class StoredInputs implements IInputs {
-    private List<String> inputs;
+    private final List<String> inputs;
     int index;
 
     public StoredInputs() {

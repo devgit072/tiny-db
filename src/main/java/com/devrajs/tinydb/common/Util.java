@@ -24,10 +24,7 @@ public class Util {
         if (word.startsWith("'") && word.endsWith("'")) {
             return true;
         }
-        if (word.startsWith("\"") && word.endsWith("\"")) {
-            return true;
-        }
-        return false;
+        return word.startsWith("\"") && word.endsWith("\"");
     }
 
     public static String getStringContent(String word) {

@@ -9,7 +9,7 @@ public class StateManager {
     public static final int SLEEP_TIME = 0;
     public static boolean is_transaction_on = false;
     public static String currentSession="";
-    // Details of current loggedin user.
+    // Details of current loggedIn user.
     private static User currentUser;
     // Details of current database which user has selected.
     private static Database currentDB;
@@ -41,7 +41,7 @@ public class StateManager {
             currentSession = UUID.randomUUID().toString();
         }
     }
-    public static String getetCurrentSession() {
+    public static String getCurrentSession() {
         return currentSession;
     }
 }

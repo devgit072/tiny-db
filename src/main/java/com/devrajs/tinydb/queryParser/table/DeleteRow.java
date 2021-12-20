@@ -53,7 +53,7 @@ public class DeleteRow {
                 conditions.add(new Condition(conditionColumnName2, columnValue2, operator2));
             }
         } else {
-            throw new RuntimeException("Invalid synctax");
+            throw new RuntimeException("Invalid syntax");
         }
 
         deleteRows(tableName, conditions, operator);

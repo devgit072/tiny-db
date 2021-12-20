@@ -19,7 +19,7 @@ public class LockManager {
         listOfTableLocked = new ArrayList<>();
     }
 
-    public static void lockTableIfTrasactionIsOn(String tableId) throws IOException, ClassNotFoundException {
+    public static void lockTableIfTransactionIsOn(String tableId) throws IOException, ClassNotFoundException {
         if (isTableLocked(tableId)) {
             throw new RuntimeException("Table is already locked");
         }
@@ -32,7 +32,7 @@ public class LockManager {
         tableIdLockMap.put(tableId, true);
         listOfTableLocked.add(tableId);
         updateContent();
-        lockOwner = StateManager.getetCurrentSession();
+        lockOwner = StateManager.getCurrentSession();
     }
 
     public static void unlockAllTable() throws IOException {
@@ -53,7 +53,7 @@ public class LockManager {
         if (!tableIdLockMap.containsKey(tableId)) {
             return false;
         }
-        if(lockOwner.equals(StateManager.getetCurrentSession())) {
+        if(lockOwner.equals(StateManager.getCurrentSession())) {
             return false;
         }
         return tableIdLockMap.get(tableId);

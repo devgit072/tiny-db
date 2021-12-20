@@ -180,12 +180,12 @@ public class DBMetadata {
     public void createERD(String databaseName) {
         User user = StateManager.getCurrentUser();
         Database db = user.getDatabase(databaseName);
-        List<Table> tableslIst = db.getTableList();
-        for (Table table : tableslIst) {
+        List<Table> tablesList = db.getTableList();
+        for (Table table : tablesList) {
             List<String> keys = table.getForeignKeysForeignTableAndColumn();
             if (keys.size() == 0) {
                 try {
-                    updateContentERD(databaseName, tableslIst);
+                    updateContentERD(databaseName, tablesList);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -194,7 +194,7 @@ public class DBMetadata {
             ERD erd = new ERD(keys.get(1), keys.get(2), table.getTableName(), keys.get(0));
             erdList.add(erd);
             try {
-                updateContentERD(databaseName, tableslIst);
+                updateContentERD(databaseName, tablesList);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -204,8 +204,8 @@ public class DBMetadata {
     }
 
     public void updateContentERD(String databaseName, List<Table> tableList) throws IOException {
-        String metaERDfile = FileConstants.ERD_DIR;
-        String fileName = metaERDfile + "/" + databaseName + ".txt";
+        String metaERDFile = FileConstants.ERD_DIR;
+        String fileName = metaERDFile + "/" + databaseName + ".txt";
         File file = new File(fileName);
 
         if (file.exists()) {

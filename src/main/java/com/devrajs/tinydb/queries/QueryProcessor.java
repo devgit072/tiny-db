@@ -9,12 +9,12 @@ import com.devrajs.tinydb.queryParser.erd.CreateErd;
 import com.devrajs.tinydb.queryParser.dump.DumpDB;
 import com.devrajs.tinydb.queryParser.dump.SourceDump;
 import com.devrajs.tinydb.queryParser.table.*;
-import com.devrajs.tinydb.queryParser.transaction.CommitTrasaction;
+import com.devrajs.tinydb.queryParser.transaction.CommitTransaction;
 import com.devrajs.tinydb.queryParser.transaction.RollbackTransaction;
 import com.devrajs.tinydb.queryParser.transaction.StartTransaction;
 import com.devrajs.tinydb.queryParser.user.CreateUser;
 import com.devrajs.tinydb.queryParser.user.DeleteUser;
-import com.devrajs.tinydb.queryParser.user.Userlogin;
+import com.devrajs.tinydb.queryParser.user.UserLogin;
 import com.devrajs.tinydb.tokens.Tokenizer;
 
 import java.io.IOException;
@@ -57,7 +57,7 @@ public class QueryProcessor {
 
         // TODO Remove hardcode.
         if (firstWord.equalsIgnoreCase("-u")) {
-            new Userlogin(this).processTokens();
+            new UserLogin(this).processTokens();
         } else if (firstWord.equalsIgnoreCase("select")) {
             new SelectTable(this).processTokens();
         } else if (firstTwoWord.equalsIgnoreCase("insert into")) {
@@ -91,7 +91,7 @@ public class QueryProcessor {
         } else if (firstTwoWord.equalsIgnoreCase("start transaction")) {
             new StartTransaction(this).processTokens();
         } else if (firstTwoWord.equalsIgnoreCase("commit transaction")) {
-            new CommitTrasaction(this).processTokens();
+            new CommitTransaction(this).processTokens();
         } else if (firstTwoWord.equalsIgnoreCase("rollback transaction")) {
             new RollbackTransaction(this).processTokens();
         } else if (firstTwoWord.equalsIgnoreCase("create erd")) {

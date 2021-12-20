@@ -17,7 +17,7 @@ public class Helper {
     public static void isColumnTypeSupported(String columnType) {
         if (!(columnType.equalsIgnoreCase("integer") || columnType.equalsIgnoreCase("string")
                 || columnType.equalsIgnoreCase("double") || columnType.equalsIgnoreCase("boolean"))) {
-            throw new RuntimeException(String.format("Unsuported datatype: %s", columnType));
+            throw new RuntimeException(String.format("Unsupported datatype: %s", columnType));
         }
     }
 

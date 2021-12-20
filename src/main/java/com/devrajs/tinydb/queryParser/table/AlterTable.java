@@ -40,7 +40,7 @@ public class AlterTable {
         } else if (userOp.equalsIgnoreCase("rename")) {
             throw new RuntimeException("Not yet implemented");
         } else {
-            throw new RuntimeException("Invalid sytanx");
+            throw new RuntimeException("Invalid syntax");
         }
         DBMetadata.getInstance().alterTable(tableName, alterTableParameters);
         System.out.println("Table altered successfully");

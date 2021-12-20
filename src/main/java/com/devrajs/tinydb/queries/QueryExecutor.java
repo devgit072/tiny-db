@@ -45,7 +45,7 @@ public class QueryExecutor {
                     System.out.println(userQuery);
                 }
                 processQuery(userQuery);
-                LogManager.writeGeneralOrTrasactionQueryLog(userQuery);
+                LogManager.writeGeneralOrTransactionQueryLog(userQuery);
             } catch (Exception e) {
                 Printer.printError(e.getMessage());
                 LogManager.writeErrorLog(userQuery, e.getMessage());

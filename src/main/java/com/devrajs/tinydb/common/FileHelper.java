@@ -23,13 +23,13 @@ public class FileHelper {
         }
     }
 
-    public static void writeIntofile(String filePath, String content) throws IOException {
+    public static void writeIntoFile(String filePath, String content) throws IOException {
         FileWriter fileWriter = new FileWriter(filePath, true);
         fileWriter.write(content);
         fileWriter.close();
     }
 
-    public static void writeIntofile(String filePath, List<String> contents) throws IOException {
+    public static void writeIntoFile(String filePath, List<String> contents) throws IOException {
         FileWriter fileWriter = new FileWriter(filePath, true);
         for(String content : contents) {
             fileWriter.write(content);

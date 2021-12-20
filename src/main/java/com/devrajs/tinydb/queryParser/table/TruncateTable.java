@@ -28,8 +28,8 @@ public class TruncateTable {
         int index = 0;
         TokensValidator validator = new TokensValidator(tokenList);
         validator.add("truncate", index).add("table", index + 1).validate();
-        String tablename = tokenList.get(index + 2);
-        DBContents.truncateTable(tablename);
+        String tableName = tokenList.get(index + 2);
+        DBContents.truncateTable(tableName);
         System.out.println("Table truncated successfully");
     }
 }

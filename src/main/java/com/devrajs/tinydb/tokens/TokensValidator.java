@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TokensValidator {
-    private record TokenAndPosition(String token, int position){};
+    private record TokenAndPosition(String token, int position){}
     List<TokenAndPosition> tokenAndPositionList;
     List<String> actualTokens;
     public TokensValidator(List<String> actualTokens) {

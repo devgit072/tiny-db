@@ -15,11 +15,11 @@ import java.security.NoSuchAlgorithmException;
 import java.util.List;
 import java.util.Map;
 
-public class Userlogin {
+public class UserLogin {
     QueryProcessor queryProcessor;
     List<String> tokenList;
 
-    public Userlogin(QueryProcessor queryProcessor) {
+    public UserLogin(QueryProcessor queryProcessor) {
         this.queryProcessor = queryProcessor;
         this.tokenList = queryProcessor.getTokenList();
     }
