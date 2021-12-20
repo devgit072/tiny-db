@@ -28,7 +28,7 @@ public class DumpDB {
         String databaseName = tokenList.get(index + 2);
         String withDataStr = tokenList.get(index + 3);
         boolean withData = Boolean.parseBoolean(withDataStr);
-        DumpManager dumpManager = new DumpManager(databaseName);
+        DumpManager dumpManager = new DumpManager();
         dumpManager.dumpDatabase(databaseName, withData);
         Printer.printSuccess("Database dump taken successfully");
     }

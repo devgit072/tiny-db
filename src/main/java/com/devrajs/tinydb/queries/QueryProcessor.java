@@ -29,6 +29,7 @@ public class QueryProcessor {
 
     public QueryProcessor(String query) {
         this.query = query;
+        validateSemicolonSuffix(query);
     }
 
     public QueryProcessor(String query, IInputs inputs) {

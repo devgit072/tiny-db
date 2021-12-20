@@ -2,7 +2,6 @@ package com.devrajs.tinydb.queryParser.dump;
 
 import com.devrajs.tinydb.common.Printer;
 import com.devrajs.tinydb.manager.DumpManager;
-import com.devrajs.tinydb.manager.StateManager;
 import com.devrajs.tinydb.queries.QueryProcessor;
 import com.devrajs.tinydb.tokens.TokensValidator;
 
@@ -20,8 +19,7 @@ public class SourceDump {
     }
 
     public void processTokens() throws IOException, ClassNotFoundException, NoSuchAlgorithmException {
-        StateManager.getCurrentDB();
-        if (tokenList.size() != 4) {
+        if (tokenList.size() != 5) {
             throw new RuntimeException("Invalid syntax");
         }
 
@@ -29,8 +27,9 @@ public class SourceDump {
         TokensValidator validator = new TokensValidator(tokenList);
         validator.add("source", index).add("dump", index + 1).validate();
         String fileName = tokenList.get(index + 2);
-        DumpManager dumpManager = new DumpManager(fileName);
-        dumpManager.sourceDump(fileName);
+        String databaseName = tokenList.get(index + 3);
+        DumpManager dumpManager = new DumpManager();
+        dumpManager.sourceDump(fileName, databaseName);
         Printer.printSuccess("Database dump restored successfully");
     }
 }

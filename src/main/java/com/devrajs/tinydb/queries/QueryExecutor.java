@@ -50,7 +50,8 @@ public class QueryExecutor {
                 Printer.printError(e.getMessage());
                 LogManager.writeErrorLog(userQuery, e.getMessage());
                 System.out.println("\n");
-                //e.printStackTrace();
+                System.out.println("Exception for query: " + userQuery);
+                e.printStackTrace();
             }
         }
     }
