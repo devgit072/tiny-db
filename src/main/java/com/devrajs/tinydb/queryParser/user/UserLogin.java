@@ -3,6 +3,8 @@ package com.devrajs.tinydb.queryParser.user;
 
 import com.devrajs.tinydb.common.Printer;
 import com.devrajs.tinydb.common.Util;
+import com.devrajs.tinydb.exception.QueryErrorException;
+import com.devrajs.tinydb.exception.QuerySyntaxException;
 import com.devrajs.tinydb.manager.DBContents;
 import com.devrajs.tinydb.manager.DBMetadata;
 import com.devrajs.tinydb.manager.LockManager;
@@ -26,7 +28,7 @@ public class UserLogin {
 
     public void processTokens() throws IOException, ClassNotFoundException, NoSuchAlgorithmException {
         if (tokenList.size() != 4) {
-            throw new RuntimeException("Invalid syntax");
+            throw new QuerySyntaxException("Invalid syntax");
         }
         int index = 0;
         String userName = "", password = "";
@@ -37,14 +39,14 @@ public class UserLogin {
             } else if (p.equals("-p")) {
                 password = tokenList.get(index + 1);
             } else {
-                throw new RuntimeException("Invalid syntax for user login query");
+                throw new QuerySyntaxException("Invalid syntax for user login query");
             }
             index = index + 2;
         }
         DBMetadata dbMetadata = DBMetadata.getInstance();
         Map<String, User> usersMap = dbMetadata.getMapOfUsernameAndUser();
         if (!usersMap.containsKey(userName)) {
-            throw new RuntimeException(String.format("Username: %s not found", userName));
+            throw new QueryErrorException(String.format("Username: %s not found", userName));
         }
 
         User user = usersMap.get(userName);
@@ -55,7 +57,7 @@ public class UserLogin {
                 String ans = queryProcessor.getInputs().getStringInput();
                 if (!user.getSecurityAnswer().equals(ans)) {
                     Printer.printError("Login attempt failed due to wrong security answer");
-                    throw new RuntimeException("Login failed");
+                    throw new QueryErrorException("Login failed");
                 }
             }
             StateManager.setCurrentUser(user);

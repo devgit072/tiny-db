@@ -24,9 +24,7 @@ public class Printer {
     public static String separator(String val) {
         int len = val.length();
         StringBuilder str = new StringBuilder();
-        for (int i=0;i<len;i++) {
-            str.append("-");
-        }
+        str.append("-".repeat(len));
         return str.toString();
     }
 

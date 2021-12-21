@@ -1,5 +1,7 @@
 package com.devrajs.tinydb.model;
 
+import com.devrajs.tinydb.exception.QueryErrorException;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -61,14 +63,14 @@ public class User implements Serializable {
     public void addDatabaseUnderUser(Database db) {
         String dbName = db.getDatabaseName();
         if (doesDBExist(dbName)) {
-            throw new RuntimeException(String.format("Database: %s already exists under user: %s", dbName, userName));
+            throw new QueryErrorException(String.format("Database: %s already exists under user: %s", dbName, userName));
         }
         databaseList.add(db);
     }
 
     public void removeDatabaseUnderUser(String dbName) {
         if (!doesDBExist(dbName)) {
-            throw new RuntimeException(String.format("Database: %s doesn't exists under user: %s", dbName, userName));
+            throw new QueryErrorException(String.format("Database: %s doesn't exists under user: %s", dbName, userName));
         }
         int index = -1;
         for (Database database : databaseList) {

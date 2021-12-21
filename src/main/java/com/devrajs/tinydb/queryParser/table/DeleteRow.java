@@ -1,6 +1,7 @@
 package com.devrajs.tinydb.queryParser.table;
 
 import com.devrajs.tinydb.common.*;
+import com.devrajs.tinydb.exception.QuerySyntaxException;
 import com.devrajs.tinydb.queries.QueryProcessor;
 import com.devrajs.tinydb.tokens.TokensValidator;
 
@@ -53,7 +54,7 @@ public class DeleteRow {
                 conditions.add(new Condition(conditionColumnName2, columnValue2, operator2));
             }
         } else {
-            throw new RuntimeException("Invalid syntax");
+            throw new QuerySyntaxException("Invalid syntax");
         }
 
         deleteRows(tableName, conditions, operator);

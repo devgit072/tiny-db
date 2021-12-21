@@ -1,5 +1,6 @@
 package com.devrajs.tinydb.queries;
 
+import com.devrajs.tinydb.exception.QuerySyntaxException;
 import com.devrajs.tinydb.inputs.IInputs;
 import com.devrajs.tinydb.queryParser.database.CreateDB;
 import com.devrajs.tinydb.queryParser.database.DropDB;
@@ -101,7 +102,7 @@ public class QueryProcessor {
         } else if (firstTwoWord.equalsIgnoreCase("source dump")) {
             new SourceDump(this).processTokens();
         } else {
-            throw new RuntimeException("Invalid Syntax");
+            throw new QuerySyntaxException("Invalid Syntax");
         }
     }
 

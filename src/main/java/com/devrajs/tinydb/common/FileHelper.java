@@ -9,16 +9,16 @@ public class FileHelper {
         File file = new File(fileName);
         if(!file.exists()) {
             if(!file.createNewFile()) {
-                throw new RuntimeException("File creation unsuccessful");
+                throw new IOException("File creation unsuccessful");
             }
         }
     }
 
-    public static void createDirectory(String dirName) {
+    public static void createDirectory(String dirName) throws IOException {
         File file = new File(dirName);
         if(!file.exists()) {
             if(!file.mkdir()) {
-                throw new RuntimeException("File creation unsuccessful");
+                throw new IOException("File creation unsuccessful");
             }
         }
     }

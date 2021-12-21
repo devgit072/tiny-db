@@ -4,6 +4,8 @@ import com.devrajs.tinydb.common.Condition;
 import com.devrajs.tinydb.common.Operator;
 import com.devrajs.tinydb.common.Printer;
 import com.devrajs.tinydb.common.SIGN;
+import com.devrajs.tinydb.exception.QueryErrorException;
+import com.devrajs.tinydb.exception.QuerySyntaxException;
 import com.devrajs.tinydb.model.Database;
 import com.devrajs.tinydb.model.Table;
 import com.devrajs.tinydb.model.TableContent;
@@ -37,7 +39,7 @@ public class DBContents {
         Database database = StateManager.getCurrentDB();
         Table table = database.getTable(tableName);
         if (table == null) {
-            throw new RuntimeException(String.format("Table: %s doesn't exist under the database: %s", tableName,
+            throw new QueryErrorException(String.format("Table: %s doesn't exist under the database: %s", tableName,
                     database.getDatabaseName()));
         }
         checkColumnContentAndColumnType(table.getColumnTypes(), columnValues);
@@ -47,7 +49,7 @@ public class DBContents {
         updateRam();
         checkForeignKeyViolation(table, row);
         if (LockManager.isTableLocked(tableId)) {
-            throw new RuntimeException(String.format("Table: %s is locked due to other ongoing transaction", table.getTableName()));
+            throw new QueryErrorException(String.format("Table: %s is locked due to other ongoing transaction", table.getTableName()));
         }
         LockManager.lockTableIfTransactionIsOn(tableId);
         TableContent tableContent;
@@ -71,7 +73,7 @@ public class DBContents {
                 String oldValue = r.get(pk).toString();
                 String newValue = newRow.get(pk).toString();
                 if (oldValue.equals(newValue)) {
-                    throw new RuntimeException(
+                    throw new QueryErrorException(
                             String.format("Duplicate primary key violation.Column: %s, Value: %s", pk, newValue));
                 }
             }
@@ -81,7 +83,7 @@ public class DBContents {
     private static Map<String, Object> prepareRow(List<String> values, List<String> columns) {
         Map<String, Object> row = new HashMap<>();
         if (values.size() != columns.size()) {
-            throw new RuntimeException("Number of columns and values mismatched");
+            throw new QueryErrorException("Number of columns and values mismatched");
         }
         int i = 0;
         while (i < values.size()) {
@@ -101,7 +103,7 @@ public class DBContents {
         Database database = StateManager.getCurrentDB();
         Table table = database.getTable(tableName);
         if (table == null) {
-            throw new RuntimeException(String.format("Table: %s doesn't exist under the database: %s", tableName,
+            throw new QueryErrorException(String.format("Table: %s doesn't exist under the database: %s", tableName,
                     database.getDatabaseName()));
         }
         String tableId = table.getTableId();
@@ -144,18 +146,18 @@ public class DBContents {
     public static void updateTable(String tableName, List<Condition> conditions, Operator operator,
                                    List<String> columnNames, List<String> values) throws IOException, ClassNotFoundException {
         if (columnNames.size() != values.size()) {
-            throw new RemoteException("Number of column and its corresponding values mismatched");
+            throw new QueryErrorException("Number of column and its corresponding values mismatched");
         }
         Database database = StateManager.getCurrentDB();
         Table table = database.getTable(tableName);
         if (table == null) {
-            throw new RuntimeException(String.format("Table: %s doesn't exist under the database: %s", tableName,
+            throw new QueryErrorException(String.format("Table: %s doesn't exist under the database: %s", tableName,
                     database.getDatabaseName()));
         }
         String tableId = table.getTableId();
         updateRam();
         if (LockManager.isTableLocked(tableId)) {
-            throw new RuntimeException("Table is locked");
+            throw new QueryErrorException("Table is locked");
         }
         LockManager.lockTableIfTransactionIsOn(tableId);
         TableContent tableContent;
@@ -191,7 +193,7 @@ public class DBContents {
         String tableId = table.getTableId();
         updateRam();
         if (LockManager.isTableLocked(tableId)) {
-            throw new RuntimeException("Table is locked");
+            throw new QueryErrorException("Table is locked");
         }
         LockManager.lockTableIfTransactionIsOn(tableId);
         TableContent tableContent;
@@ -237,7 +239,7 @@ public class DBContents {
             String columnValue1 = conditions.get(i).getColumnValue();
             SIGN sign = conditions.get(i).getOperator();
             if (!oneRow.containsKey(column1)) {
-                throw new RuntimeException("Column doesn't exist: " + column1);
+                throw new QueryErrorException("Column doesn't exist: " + column1);
             }
             String actualValue = oneRow.get(column1).toString();
             if (sign == SIGN.EQUAL) {
@@ -253,7 +255,7 @@ public class DBContents {
             } else if (sign == SIGN.LESSER_THAN_EQUAL_TO) {
                 conditionTestResult[i] = columnValue1.compareTo(actualValue) >= 0;
             } else {
-                throw new RuntimeException("Operator not supported yet: " + operator.toString());
+                throw new QueryErrorException("Operator not supported yet: " + operator.toString());
             }
         }
         if (conditions.size() == 1) {
@@ -273,12 +275,12 @@ public class DBContents {
         Database database = StateManager.getCurrentDB();
         Table table = database.getTable(tableName);
         if (table == null) {
-            throw new RuntimeException(String.format("Table: %s doesn't exist under the database: %s", tableName,
+            throw new QueryErrorException(String.format("Table: %s doesn't exist under the database: %s", tableName,
                     database.getDatabaseName()));
         }
         String tableId = table.getTableId();
         if (LockManager.isTableLocked(tableId)) {
-            throw new RuntimeException("Table is locked");
+            throw new QueryErrorException("Table is locked");
         }
         LockManager.lockTableIfTransactionIsOn(tableId);
         TableContent tableContent;
@@ -351,7 +353,7 @@ public class DBContents {
             } else if (columnType.equalsIgnoreCase("double")) {
                 Helper.isDouble(columnValue);
             } else {
-                throw new RuntimeException("Not a supported datatype:" + columnType);
+                throw new QuerySyntaxException("Not a supported datatype:" + columnType);
             }
         }
     }
@@ -367,7 +369,7 @@ public class DBContents {
         Database currentDB = StateManager.getCurrentDB();
         Table foreignTable = currentDB.getTable(foreignTableName);
         if (!tableIdToTableContentMap.containsKey(foreignTable.getTableId())) {
-            throw new RuntimeException(String.format(
+            throw new QueryErrorException(String.format(
                     "Foreign key violation: Foreign table: %s doesn't have value under column: %s for the specified in the foreignKey: %s", foreignTableName, foreignColumn, foreignKey));
         }
         TableContent foreignTableContent = tableIdToTableContentMap.get(foreignTable.getTableId());
@@ -379,7 +381,7 @@ public class DBContents {
                 return;
             }
         }
-        throw new RuntimeException(String.format(
+        throw new QueryErrorException(String.format(
                 "Foreign key violation: Foreign table: %s doesn't have value under column: %s for the specified in the foreignKey: %s", foreignTableName, foreignColumn, foreignKey));
     }
 }

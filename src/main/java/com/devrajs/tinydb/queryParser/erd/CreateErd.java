@@ -1,5 +1,7 @@
 package com.devrajs.tinydb.queryParser.erd;
 
+import com.devrajs.tinydb.exception.QueryErrorException;
+import com.devrajs.tinydb.exception.QuerySyntaxException;
 import com.devrajs.tinydb.manager.DBMetadata;
 import com.devrajs.tinydb.manager.StateManager;
 import com.devrajs.tinydb.queries.QueryProcessor;
@@ -19,12 +21,7 @@ public class CreateErd {
 
     public void processTokens() throws IOException, ClassNotFoundException {
         if (tokenList.size() != 4) {
-            throw new RuntimeException("Invalid syntax");
-        }
-
-        // check if user has selected the db or not
-        if (StateManager.getCurrentDB().equals("")) {
-            throw new RuntimeException("Please select database first");
+            throw new QuerySyntaxException("Invalid syntax");
         }
 
         int index = 0;
@@ -33,8 +30,7 @@ public class CreateErd {
         String databaseName = tokenList.get(index + 2);
 
         if (!databaseName.equals(StateManager.getCurrentDB().getDatabaseName())) {
-            System.out.println("This is not the database you are currently on!");
-            return;
+            throw new QueryErrorException("Invalid database name");
         }
 
         DBMetadata.getInstance().createERD(databaseName);

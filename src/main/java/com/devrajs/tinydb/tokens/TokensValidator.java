@@ -1,12 +1,17 @@
 package com.devrajs.tinydb.tokens;
 
+import com.devrajs.tinydb.exception.QuerySyntaxException;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class TokensValidator {
-    private record TokenAndPosition(String token, int position){}
+    private record TokenAndPosition(String token, int position) {
+    }
+
     List<TokenAndPosition> tokenAndPositionList;
     List<String> actualTokens;
+
     public TokensValidator(List<String> actualTokens) {
         tokenAndPositionList = new ArrayList<>();
         this.actualTokens = actualTokens;
@@ -16,12 +21,12 @@ public class TokensValidator {
         String token = tokenList.get(index);
         String errorMsg = String.format("Token: %s not found at index: %d", expectedToken, index);
         if (!token.equalsIgnoreCase(expectedToken)) {
-            throw new RuntimeException("Invalid syntax: " + errorMsg);
+            throw new QuerySyntaxException("Invalid syntax: " + errorMsg);
         }
     }
 
     public void validate() {
-        for(TokenAndPosition t : tokenAndPositionList) {
+        for (TokenAndPosition t : tokenAndPositionList) {
             int position = t.position();
             String token = t.token();
             checkTokenValidity(actualTokens, position, token);

@@ -1,5 +1,6 @@
 package com.devrajs.tinydb.queryParser.table;
 
+import com.devrajs.tinydb.exception.QuerySyntaxException;
 import com.devrajs.tinydb.manager.DBMetadata;
 import com.devrajs.tinydb.model.Table;
 import com.devrajs.tinydb.queries.QueryProcessor;
@@ -54,7 +55,7 @@ public class CreateTable {
             } else if (tokenList.get(i).equals(",")) {
                 i++;
             } else {
-                throw new RuntimeException("Invalid syntax");
+                throw new QuerySyntaxException("Invalid syntax");
             }
         }
         Table table = new Table(tableName, columnAndItsTypes, primaryKeyColumns, foreignKeysForeignTableAndColumn);

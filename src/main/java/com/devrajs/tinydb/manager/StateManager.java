@@ -1,5 +1,6 @@
 package com.devrajs.tinydb.manager;
 
+import com.devrajs.tinydb.exception.QueryErrorException;
 import com.devrajs.tinydb.model.Database;
 import com.devrajs.tinydb.model.User;
 
@@ -16,7 +17,7 @@ public class StateManager {
 
     public static User getCurrentUser() {
         if(currentUser == null) {
-            throw new RuntimeException("User is not logged in. Please login first");
+            throw new QueryErrorException("User is not logged in. Please login first");
         }
         return currentUser;
     }
@@ -27,7 +28,7 @@ public class StateManager {
 
     public static Database getCurrentDB() {
         if (currentDB == null) {
-            throw new RuntimeException("No database selected. Please switch to any DB");
+            throw new QueryErrorException("No database selected. Please switch to any DB");
         }
         return currentDB;
     }

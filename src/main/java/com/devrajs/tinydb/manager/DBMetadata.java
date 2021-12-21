@@ -1,6 +1,8 @@
 package com.devrajs.tinydb.manager;
 
 import com.devrajs.tinydb.common.AlterTableParameters;
+import com.devrajs.tinydb.exception.QueryErrorException;
+import com.devrajs.tinydb.exception.UnexpectedRuntimeException;
 import com.devrajs.tinydb.model.Database;
 import com.devrajs.tinydb.model.ERD;
 import com.devrajs.tinydb.model.Table;
@@ -38,7 +40,7 @@ public class DBMetadata {
 
     public void createUser(User user) throws IOException {
         if (doesUserExists(user.getUserName())) {
-            throw new RuntimeException(String.format("Username: %s already exists", user.getUserName()));
+            throw new QueryErrorException(String.format("Username: %s already exists", user.getUserName()));
         }
         mapOfUsernameAndUser.put(user.getUserName(), user);
         updateContent();
@@ -46,7 +48,7 @@ public class DBMetadata {
 
     public void deleteUser(String userName) throws IOException {
         if (!doesUserExists(userName)) {
-            throw new RuntimeException(String.format("Username: %s doesn't exists", userName));
+            throw new QueryErrorException(String.format("Username: %s doesn't exists", userName));
         }
         mapOfUsernameAndUser.remove(userName);
         updateContent();
@@ -169,7 +171,7 @@ public class DBMetadata {
     private void fetchContent() throws IOException, ClassNotFoundException {
         File file = new File(metafile);
         if (file.exists() && file.length() == 0) {
-            throw new RuntimeException("Metadata file is empty");
+            throw new UnexpectedRuntimeException("Metadata file is empty");
         }
         FileInputStream fileInputStream = new FileInputStream(file);
         ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);
@@ -177,30 +179,22 @@ public class DBMetadata {
         objectInputStream.close();
     }
 
-    public void createERD(String databaseName) {
+    public void createERD(String databaseName) throws IOException {
         User user = StateManager.getCurrentUser();
         Database db = user.getDatabase(databaseName);
         List<Table> tablesList = db.getTableList();
         for (Table table : tablesList) {
             List<String> keys = table.getForeignKeysForeignTableAndColumn();
             if (keys.size() == 0) {
-                try {
-                    updateContentERD(databaseName, tablesList);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                updateContentERD(databaseName, tablesList);
                 continue;
             }
             ERD erd = new ERD(keys.get(1), keys.get(2), table.getTableName(), keys.get(0));
             erdList.add(erd);
-            try {
-                updateContentERD(databaseName, tablesList);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            updateContentERD(databaseName, tablesList);
         }
         erdList.clear();
-        System.out.println("ERD generated!!");
+        System.out.println("ERD Generation successful");
     }
 
     public void updateContentERD(String databaseName, List<Table> tableList) throws IOException {

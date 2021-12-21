@@ -1,6 +1,7 @@
 package com.devrajs.tinydb.queryParser.database;
 
 import com.devrajs.tinydb.common.Printer;
+import com.devrajs.tinydb.exception.QuerySyntaxException;
 import com.devrajs.tinydb.manager.DBMetadata;
 import com.devrajs.tinydb.manager.StateManager;
 import com.devrajs.tinydb.model.Database;
@@ -23,7 +24,7 @@ public class CreateDB {
 
     public void processTokens() throws IOException, ClassNotFoundException {
         if (tokenList.size() != 4) {
-            throw new RuntimeException("Invalid syntax");
+            throw new QuerySyntaxException("Invalid syntax");
         }
 
         int index = 0;

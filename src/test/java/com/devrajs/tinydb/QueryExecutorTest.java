@@ -1,8 +1,9 @@
 package com.devrajs.tinydb;
 
+import com.devrajs.tinydb.exception.QueryErrorException;
 import com.devrajs.tinydb.inputs.StoredInputs;
 import com.devrajs.tinydb.queries.QueryExecutor;
-import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.*;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
@@ -12,27 +13,41 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Stream;
 
+import static com.devrajs.tinydb.TestHelperFile.*;
+
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class QueryExecutorTest {
-    static List<String> inputs;
-    static StoredInputs storedInputs;
-    static QueryExecutor queryExecutor;
+    static List<TestInput> inputs;
+    //static StoredInputs storedInputs;
+    //static QueryExecutor queryExecutor;
+
+    static String databaseName;
+    static String userName;
+    static String password;
+    static String secAnswer;
 
     @BeforeAll
     public static void init() throws IOException, NoSuchAlgorithmException, ClassNotFoundException {
         inputs = new ArrayList<>();
-        storedInputs = new StoredInputs();
-        queryExecutor = new QueryExecutor(storedInputs);
-        queryExecutor.init();
-        inputProviders();
+        //storedInputs = new StoredInputs();
+        //queryExecutor = new QueryExecutor(storedInputs);
+        generateTestData();
+        //queryExecutor.init();
+        //inputProviders();
     }
 
+    static void generateTestData() {
+        long epoch = System.currentTimeMillis();
+        userName = "user_" + epoch;
+        password = "pass123";
+        secAnswer = "valhalla";
+        databaseName = "tinydb_" + epoch;
+    }
+
+    /*
     static Stream<String> inputProviders() throws IOException, ClassNotFoundException, NoSuchAlgorithmException {
         String epochTime = String.valueOf(System.currentTimeMillis());
         //StoredInputs inputs = new StoredInputs();
-        inputs.add("-u root -p root123");
-        inputs.add("create user with(NND_" + epochTime + ",abc123);");
-        inputs.add("tommy123");
-        inputs.add("create user with(NND_" + epochTime + ",abc123);"); // expected duplicate user error.
         inputs.add("show databases;");
         String dbName = epochTime;
         inputs.add(String.format("create database %s ;", dbName));
@@ -99,24 +114,78 @@ public class QueryExecutorTest {
         String dumpRestoreDB = "dumpRestoreDB_" + epochTime;
         inputs.add(String.format("create database %s;", dumpRestoreDB));
         inputs.add(String.format("use %s;", dumpRestoreDB));
-        // TODO Implement it.
         //String sqlDumpFile = getMostRecentFile();
-        //inputs.add(String.format("source dump %s;", sqlDumpFile));
+        inputs.add(String.format("source dump %s;", sqlDumpFile));
         inputs.add(String.format("use %s;", dbName));
         inputs.add(String.format("create erd %s;", dbName));
         inputs.add("q");
         return inputs.stream();
-        //QueryExecutor queryExecutor = new QueryExecutor(inputs);
-        //queryExecutor.startApplication();
     }
 
-    @ParameterizedTest
-    @MethodSource("inputProviders")
-    public void testQueries(String input) {
+     */
+
+    @Test
+    @Order(1)
+    public void testUserCreation() throws IOException, NoSuchAlgorithmException, ClassNotFoundException {
+        StoredInputs storedInputs = new StoredInputs();
+        storedInputs.add("-u root -p root123");
+        storedInputs.add(String.format("create user with(%s,%s);", userName, password));
+        storedInputs.add(secAnswer);
+        storedInputs.add("q");
+        QueryExecutor q = getQueryExecutor(storedInputs);
         try {
-            queryExecutor.processQuery(input);
+            q.executeQueries();
+        } catch (IOException | NoSuchAlgorithmException | ClassNotFoundException e) {
+            e.printStackTrace();
+            Assertions.fail("Exception: " + e.getMessage());
+        }
+    }
+
+    @Test
+    @Order(2)
+    public void loginWithNewUser() throws IOException, NoSuchAlgorithmException, ClassNotFoundException {
+        StoredInputs storedInputs = new StoredInputs();
+        storedInputs.add(String.format("-u %s -p %s", userName, password));
+        storedInputs.add(secAnswer);
+        storedInputs.add("q");
+        QueryExecutor q = getQueryExecutor(storedInputs);
+        q.executeQueries();
+    }
+
+    @Test
+    @Order(3)
+    public void loginWithInvalidCredentials() throws IOException, NoSuchAlgorithmException, ClassNotFoundException {
+        StoredInputs storedInputs = new StoredInputs();
+        storedInputs.add(String.format("-u %s -p %s", "invalid", password));
+        storedInputs.add(secAnswer);
+        storedInputs.add("q");
+        QueryExecutor q = getQueryExecutor(storedInputs);
+        try {
+            q.executeQueries();
+        } catch (QueryErrorException e) {
+            System.out.println("Expected user login failure");
+        }
+    }
+
+    //@Test
+    public void testDatabaseQueries() throws IOException, NoSuchAlgorithmException, ClassNotFoundException {
+        StoredInputs storedInputs = new StoredInputs();
+        storedInputs.add(String.format("-u %s -p %s", userName, password));
+        storedInputs.add(secAnswer);
+        //storedInputs.add("\\q");
+        storedInputs.add("show databases;");
+        storedInputs.add("SHOW DATABASES;"); // Just to test case sensitiveness.
+        QueryExecutor queryExecutor = new QueryExecutor(storedInputs);
+        queryExecutor.executeQueries();
+    }
+
+    //@ParameterizedTest
+    //@MethodSource("inputProviders")
+    /*public void testQueries(String input) {
+        try {
+            //queryExecutor.processQuery(input);
         } catch (IOException | ClassNotFoundException | NoSuchAlgorithmException e) {
             e.printStackTrace();
         }
-    }
+    }*/
 }

@@ -1,5 +1,7 @@
 package com.devrajs.tinydb.manager;
 
+import com.devrajs.tinydb.exception.UnexpectedRuntimeException;
+
 import java.io.*;
 import java.util.*;
 
@@ -21,7 +23,7 @@ public class LockManager {
 
     public static void lockTableIfTransactionIsOn(String tableId) throws IOException, ClassNotFoundException {
         if (isTableLocked(tableId)) {
-            throw new RuntimeException("Table is already locked");
+            throw new UnexpectedRuntimeException("Table is already locked");
         }
         if (StateManager.is_transaction_on) {
             lockTable(tableId);

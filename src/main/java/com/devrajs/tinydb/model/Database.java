@@ -1,5 +1,7 @@
 package com.devrajs.tinydb.model;
 
+import com.devrajs.tinydb.exception.QueryErrorException;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -51,7 +53,7 @@ public class Database implements Serializable {
 
     public void addTable(Table table) {
         if (doesTableExist(table.getTableName())) {
-            throw new RuntimeException(
+            throw new QueryErrorException(
                     String.format("Table: %s under database: %s already exists", table.getTableName(), databaseName));
         }
         doesItViolateForeignKey(table);
@@ -60,7 +62,7 @@ public class Database implements Serializable {
 
     public void removeTable(String tableName) {
         if (!doesTableExist(tableName)) {
-            throw new RuntimeException(
+            throw new QueryErrorException(
                     String.format("Table: %s doesn't exists under database: %s", tableName, databaseName));
         }
         int index = -1;
@@ -90,19 +92,19 @@ public class Database implements Serializable {
         String foreignTableName = newForeignKeys.get(1);
         String foreignColumn = newForeignKeys.get(2);
         if(!doesTableExist(foreignTableName)) {
-            throw new RuntimeException(String.format("Foreign table: %s doesn't exists", foreignTableName));
+            throw new QueryErrorException(String.format("Foreign table: %s doesn't exists", foreignTableName));
         }
         Table foreignTable = getTable(foreignTableName);
         if(!foreignTable.hasColumn(foreignColumn)) {
-            throw new RuntimeException("Foreign column doesn't exists");
+            throw new QueryErrorException("Foreign column doesn't exists");
         }
         List<String> foreignTableePKs = foreignTable.getPrimaryKeyColumns();
         if (foreignTableePKs.isEmpty()) {
-            throw new RuntimeException(String.format("Foreign table: %s doesn't have any primary key.", foreignTableName));
+            throw new QueryErrorException(String.format("Foreign table: %s doesn't have any primary key.", foreignTableName));
         }
         // check is foreign key is primary key in foreign table.
         if(!isPresentInTheList(foreignColumn, foreignTableePKs)) {
-            throw new RuntimeException("Referenced foreign key is not primary key in the foreign table");
+            throw new QueryErrorException("Referenced foreign key is not primary key in the foreign table");
         }
     }
     boolean isPresentInTheList(String key, List<String> list) {

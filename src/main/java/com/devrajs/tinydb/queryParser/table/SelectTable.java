@@ -2,6 +2,7 @@ package com.devrajs.tinydb.queryParser.table;
 
 
 import com.devrajs.tinydb.common.*;
+import com.devrajs.tinydb.exception.QuerySyntaxException;
 import com.devrajs.tinydb.manager.DBContents;
 import com.devrajs.tinydb.queries.QueryProcessor;
 import com.devrajs.tinydb.tokens.TokensValidator;
@@ -39,7 +40,7 @@ public class SelectTable {
                     break;
                 } else {
                     String errorMsg = String.format("Error: Token: %s found at index: %d", tokenList.get(i), index);
-                    throw new RuntimeException(errorMsg);
+                    throw new QuerySyntaxException(errorMsg);
                 }
             }
         }
@@ -59,7 +60,7 @@ public class SelectTable {
                 } else if (tokenList.get(i).equalsIgnoreCase("or")) {
                     operator = Operators.valueOf(tokenList.get(i++));
                 } else {
-                    throw new RuntimeException("Invalid syntax");
+                    throw new QuerySyntaxException("Invalid syntax");
                 }
                 String conditionColumnName2 = tokenList.get(i++);
                 SIGN operator2 = MathOperators.valueOf(tokenList.get(i++));

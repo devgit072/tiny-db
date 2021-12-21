@@ -1,5 +1,6 @@
 package com.devrajs.tinydb.queryParser.database;
 
+import com.devrajs.tinydb.exception.QuerySyntaxException;
 import com.devrajs.tinydb.manager.DBMetadata;
 import com.devrajs.tinydb.queries.QueryProcessor;
 import com.devrajs.tinydb.tokens.TokensValidator;
@@ -22,7 +23,7 @@ public class ShowDB {
 
     public void processTokens() throws IOException, ClassNotFoundException {
         if (tokenList.size() != 3) {
-            throw new RuntimeException("Invalid syntax. Expected syntax: show database;");
+            throw new QuerySyntaxException("Invalid syntax. Expected syntax: show database;");
         }
         TokensValidator tokensValidator = new TokensValidator(tokenList);
         tokensValidator.add("show", 0).add("databases", 1).validate();

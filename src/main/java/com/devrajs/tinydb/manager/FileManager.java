@@ -29,7 +29,7 @@ public class FileManager {
         createFile(METADATA_FILE);
     }
 
-    private static void createERDDirectoryAndFiles() {
+    private static void createERDDirectoryAndFiles() throws IOException {
         createDirectory(ERD_DIR);
     }
 }

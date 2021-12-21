@@ -45,7 +45,7 @@ public class QueryExecutor {
                 if (inputs instanceof StoredInputs) {
                     System.out.println(userQuery);
                 }
-                processQuery(userQuery);
+                processQuery(userQuery, inputs);
                 LogManager.writeGeneralOrTransactionQueryLog(userQuery);
             } catch (Exception e) {
                 Printer.printError(e.getMessage());

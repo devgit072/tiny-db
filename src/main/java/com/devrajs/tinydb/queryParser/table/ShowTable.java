@@ -1,6 +1,7 @@
 package com.devrajs.tinydb.queryParser.table;
 
 
+import com.devrajs.tinydb.exception.QuerySyntaxException;
 import com.devrajs.tinydb.manager.DBMetadata;
 import com.devrajs.tinydb.queries.QueryProcessor;
 import com.devrajs.tinydb.tokens.TokensValidator;
@@ -19,7 +20,7 @@ public class ShowTable {
 
     public void processTokens() throws IOException, ClassNotFoundException {
         if (tokenList.size() != 3) {
-            throw new RuntimeException("Invalid syntax");
+            throw new QuerySyntaxException("Invalid syntax");
         }
 
         int index = 0;

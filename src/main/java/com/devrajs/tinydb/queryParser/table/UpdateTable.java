@@ -1,6 +1,7 @@
 package com.devrajs.tinydb.queryParser.table;
 
 import com.devrajs.tinydb.common.*;
+import com.devrajs.tinydb.exception.QuerySyntaxException;
 import com.devrajs.tinydb.manager.DBContents;
 import com.devrajs.tinydb.queries.QueryProcessor;
 import com.devrajs.tinydb.tokens.TokensValidator;
@@ -52,7 +53,7 @@ public class UpdateTable {
                     } else if (tokenList.get(i).equalsIgnoreCase("or")) {
                         operator = Operators.valueOf(tokenList.get(i++));
                     } else {
-                        throw new RuntimeException("Invalid syntax");
+                        throw new QuerySyntaxException("Invalid syntax");
                     }
                     String conditionColumnName2 = tokenList.get(i++);
                     validator.add("=", i).validate();

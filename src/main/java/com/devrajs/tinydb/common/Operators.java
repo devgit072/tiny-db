@@ -1,5 +1,7 @@
 package com.devrajs.tinydb.common;
 
+import com.devrajs.tinydb.exception.QuerySyntaxException;
+
 public class Operators {
     public static Operator valueOf(String val) {
         if(val.equalsIgnoreCase("and")) {
@@ -7,7 +9,7 @@ public class Operators {
         } else if(val.equalsIgnoreCase("or")) {
             return Operator.OR;
         } else {
-            throw new RuntimeException("Invalid value of operator: " + val);
+            throw new QuerySyntaxException("Invalid value of operator: " + val);
         }
     }
 }

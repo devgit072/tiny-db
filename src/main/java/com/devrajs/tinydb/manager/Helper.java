@@ -1,5 +1,7 @@
 package com.devrajs.tinydb.manager;
 
+import com.devrajs.tinydb.exception.QuerySyntaxException;
+
 import java.util.Map;
 
 public class Helper {
@@ -17,7 +19,7 @@ public class Helper {
     public static void isColumnTypeSupported(String columnType) {
         if (!(columnType.equalsIgnoreCase("integer") || columnType.equalsIgnoreCase("string")
                 || columnType.equalsIgnoreCase("double") || columnType.equalsIgnoreCase("boolean"))) {
-            throw new RuntimeException(String.format("Unsupported datatype: %s", columnType));
+            throw new QuerySyntaxException(String.format("Unsupported datatype: %s", columnType));
         }
     }
 
@@ -26,21 +28,21 @@ public class Helper {
                 (value.startsWith("\"") && value.endsWith("\""))) {
             return;
         }
-        throw new RuntimeException(String.format("Value: %s is not a string value", value));
+        throw new QuerySyntaxException(String.format("Value: %s is not a string value", value));
     }
 
     public static void isBoolean(String value) {
         if(value.equalsIgnoreCase("true") || value.equalsIgnoreCase("false")) {
             return;
         }
-        throw new RuntimeException(String.format("%s is not a valid boolean value", value));
+        throw new QuerySyntaxException(String.format("%s is not a valid boolean value", value));
     }
 
     public static void isInteger(String value) {
         try {
             Integer.parseInt(value);
         } catch (Exception e) {
-            throw new RuntimeException(String.format("%s is not a valid integer value. Error: %s", value, e.getMessage()));
+            throw new QuerySyntaxException(String.format("%s is not a valid integer value. Error: %s", value, e.getMessage()));
         }
 
     }
@@ -49,7 +51,7 @@ public class Helper {
         try {
             Double.parseDouble(value);
         } catch (Exception e) {
-            throw new RuntimeException(String.format("%s is not a valid double value. Error: %s", value, e.getMessage()));
+            throw new QuerySyntaxException(String.format("%s is not a valid double value. Error: %s", value, e.getMessage()));
         }
     }
 }

@@ -1,6 +1,7 @@
 package com.devrajs.tinydb.queryParser.user;
 
 import com.devrajs.tinydb.common.Util;
+import com.devrajs.tinydb.exception.QuerySyntaxException;
 import com.devrajs.tinydb.manager.DBMetadata;
 import com.devrajs.tinydb.model.User;
 import com.devrajs.tinydb.queries.QueryProcessor;
@@ -24,7 +25,7 @@ public class CreateUser {
 
     public void processTokens() throws NoSuchAlgorithmException, IOException, ClassNotFoundException {
         if (tokenList.size() != 9) {
-            throw new RuntimeException("Invalid syntax");
+            throw new QuerySyntaxException("Invalid syntax");
         }
 
         int index = 0;

@@ -1,6 +1,7 @@
 package com.devrajs.tinydb.queryParser.table;
 
 import com.devrajs.tinydb.common.AlterTableParameters;
+import com.devrajs.tinydb.exception.QuerySyntaxException;
 import com.devrajs.tinydb.manager.DBMetadata;
 import com.devrajs.tinydb.queries.QueryProcessor;
 import com.devrajs.tinydb.tokens.TokensValidator;
@@ -38,9 +39,9 @@ public class AlterTable {
             String columnToBeDeleted = tokenList.get(i++);
             alterTableParameters.setOldColumnName(columnToBeDeleted);
         } else if (userOp.equalsIgnoreCase("rename")) {
-            throw new RuntimeException("Not yet implemented");
+            throw new IllegalArgumentException("Not yet implemented");
         } else {
-            throw new RuntimeException("Invalid syntax");
+            throw new QuerySyntaxException("Invalid syntax");
         }
         DBMetadata.getInstance().alterTable(tableName, alterTableParameters);
         System.out.println("Table altered successfully");
