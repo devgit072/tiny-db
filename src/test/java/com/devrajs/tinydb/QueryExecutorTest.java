@@ -1,6 +1,7 @@
 package com.devrajs.tinydb;
 
 import com.devrajs.tinydb.exception.QueryErrorException;
+import com.devrajs.tinydb.exception.QuerySyntaxException;
 import com.devrajs.tinydb.inputs.StoredInputs;
 import com.devrajs.tinydb.queries.QueryExecutor;
 import org.junit.jupiter.api.*;
@@ -42,47 +43,12 @@ public class QueryExecutorTest {
         password = "pass123";
         secAnswer = "valhalla";
         databaseName = "tinydb_" + epoch;
+        InputProvider.setDatabase(databaseName);
     }
 
     /*
     static Stream<String> inputProviders() throws IOException, ClassNotFoundException, NoSuchAlgorithmException {
-        String epochTime = String.valueOf(System.currentTimeMillis());
-        //StoredInputs inputs = new StoredInputs();
-        inputs.add("show databases;");
-        String dbName = epochTime;
-        inputs.add(String.format("create database %s ;", dbName));
-        inputs.add(String.format("create database %s ;", dbName)); // expected duplicate database error.
-        inputs.add(String.format("use %s;", dbName));
-        inputs.add("show databases;");
-        inputs.add("create table players (name string, age integer, country string, height double, isChampion boolean);");
-        inputs.add("create table players (name string, age integer);"); // duplicate tables
-        inputs.add("create table balbla2(name varchar, age integer);"); // invalid datatype.
-        inputs.add("show tables;");
-        inputs.add("insert into players('Ronaldo', 30, 'Purtagal', 6.2, true);");
-        inputs.add("insert into players('Villa', 40, 'Spain', 5.9, false);");
-        inputs.add("insert into players('Messi', 28, 'Argentina', 5.8, true);");
-        inputs.add("insert into players('Maradona', 50, 'Argentina', 5.6, true);");
-        inputs.add("insert into players(Ronaldo, 30, 'Purtagal', 6.2, true);");
-        inputs.add("insert into players('Ronaldo', abc, 'Purtagal', 6.2, true);");
-        inputs.add("insert into players('Ronaldo', 30, 'Purtagal', 6.2, yes);");
-        inputs.add("select * from players;");
-        inputs.add("select * from players where name='Messi';");
-        inputs.add("select * from players where age=40;");
-        inputs.add("select * from players where isChampion=true;");
-        inputs.add("select * from players where height=5.9;");
-        inputs.add("select * from players where age > 35;");
-        inputs.add("select * from players where age < 35;");
-        inputs.add("select * from players where isChampion=true and age=30;");
-        inputs.add("select * from players where isChampion=true or age=30;");
-        inputs.add("start transaction;");
-        inputs.add("insert into players('Blabala1', 30, 'Akha', 6.2, true);");
-        inputs.add("insert into players('Glagla1', 40, 'Lakha', 5.9, false);");
-        inputs.add("commit transaction;");
-        inputs.add("select * from players;");
-        inputs.add("start transaction;");
-        inputs.add("insert into players('aborted_player', 30, 'aborted', 6.2, true);");
-        inputs.add("rollback transaction;");
-        inputs.add("select * from players;");
+
         inputs.add("update players set age=32 where name='Messi';");
         inputs.add("select * from players;");
         inputs.add("update players set age=60 where country='Argentina' and height=5.6;");
@@ -121,8 +87,7 @@ public class QueryExecutorTest {
         inputs.add("q");
         return inputs.stream();
     }
-
-     */
+    */
 
     @Test
     @Order(1)
@@ -167,25 +132,70 @@ public class QueryExecutorTest {
         }
     }
 
-    //@Test
+    @Test
+    @Order(4)
     public void testDatabaseQueries() throws IOException, NoSuchAlgorithmException, ClassNotFoundException {
         StoredInputs storedInputs = new StoredInputs();
         storedInputs.add(String.format("-u %s -p %s", userName, password));
         storedInputs.add(secAnswer);
-        //storedInputs.add("\\q");
         storedInputs.add("show databases;");
         storedInputs.add("SHOW DATABASES;"); // Just to test case sensitiveness.
+        storedInputs.add(String.format("CREATE DATABASE %s;", databaseName));
+        storedInputs.add("SHOW DATABASES;");
+        storedInputs.add("q");
         QueryExecutor queryExecutor = new QueryExecutor(storedInputs);
         queryExecutor.executeQueries();
     }
 
-    //@ParameterizedTest
-    //@MethodSource("inputProviders")
-    /*public void testQueries(String input) {
+    @ParameterizedTest
+    @MethodSource("com.devrajs.tinydb.InputProvider#getInputsForTablesTest")
+    @Order(5)
+    public void testQueries(TestInput testInput) throws IOException, NoSuchAlgorithmException, ClassNotFoundException {
+        StoredInputs storedInputs = new StoredInputs();
+        storedInputs.add(String.format("USE %s;", databaseName));
+        storedInputs.add(testInput.query);
+        storedInputs.add("q");
+        QueryExecutor queryExecutor = getQueryExecutor(storedInputs);
         try {
-            //queryExecutor.processQuery(input);
-        } catch (IOException | ClassNotFoundException | NoSuchAlgorithmException e) {
-            e.printStackTrace();
+            queryExecutor.executeQueries();
+        } catch (QueryErrorException queryErrorException) {
+            if(testInput.getExpectedException() == null) {
+                String errMsg = String.format("QueryErrorException: %s thrown when it was not expected for query: %s", queryErrorException.getMessage(), testInput.getQuery());
+                Assertions.fail(errMsg);
+            } else {
+                if(!(testInput.expectedException.getExpectedException() instanceof QueryErrorException)) {
+                    Assertions.fail("Expected and actual exception mismatched");
+                }
+            }
+        } catch (QuerySyntaxException querySyntaxException) {
+            if(testInput.getExpectedException() == null) {
+                String errMsg = String.format("QuerySyntaxException: %s thrown when it was not expected for query: %s", querySyntaxException.getMessage(), testInput.getQuery());
+                Assertions.fail(errMsg);
+            } else {
+                if(!(testInput.expectedException.getExpectedException() instanceof QuerySyntaxException)) {
+                    Assertions.fail("Expected and actual exception mismatched for query: " + testInput.getQuery());
+                }
+            }
         }
-    }*/
+    }
+
+    @Test
+    @Order(6)
+    public void testTransactionQueries() throws IOException, NoSuchAlgorithmException, ClassNotFoundException {
+        StoredInputs storedInputs = InputProvider.transactionQueries(databaseName);
+        QueryExecutor executor = getQueryExecutor(storedInputs);
+        try {
+            executor.executeQueries();
+        } catch (Exception e) {
+            Assertions.fail("Exception thrown: %s"+ e.getMessage());
+        }
+    }
+
+    @Test
+    @Order(7)
+    public void testDumpQueries() throws IOException, NoSuchAlgorithmException, ClassNotFoundException {
+        StoredInputs storedInputs = InputProvider.dumpQueries(databaseName);
+        QueryExecutor executor = TestHelperFile.getQueryExecutor(storedInputs);
+        executor.executeQueries();
+    }
 }

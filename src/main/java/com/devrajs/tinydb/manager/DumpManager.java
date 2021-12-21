@@ -14,15 +14,16 @@ import java.util.List;
 import java.util.Map;
 
 public class DumpManager {
-    public void dumpDatabase(String databaseName, boolean withData) throws IOException, ClassNotFoundException {
+    public void dumpDatabase(String databaseName, boolean withData, String filePath) throws IOException, ClassNotFoundException {
         User user = StateManager.getCurrentUser();
         Database database = user.getDatabase(databaseName);
         List<String> dumpQueries = getDumpQueries(database);
         if (withData) {
             getTablesContentQueries(database);
         }
-
-        String filePath = String.format("SQLDump/%s.sql", databaseName);
+        if(filePath.isEmpty()) {
+            filePath = String.format("SQLDump/%s.sql", databaseName);
+        }
         FileHelper.writeIntoFile(filePath, dumpQueries);
         System.out.println("SQL dump has been created in file: " + filePath);
     }
