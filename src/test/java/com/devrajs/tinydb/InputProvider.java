@@ -138,8 +138,16 @@ public class InputProvider {
 
     public static StoredInputs dumpQueries(String databaseName) {
         StoredInputs storedInputs = new StoredInputs();
+        String fileName = String.format("SQLDump/%s_withData.sql", databaseName);
+        String restoredDatabaseName = String.format("restored_%s", databaseName);
         storedInputs.add(String.format("dump database %s false;", databaseName));
-        storedInputs.add(String.format("dump database %s true SQLDump/%s_withData.sql;", databaseName, databaseName));
+        storedInputs.add(String.format("dump database %s true %s;", databaseName, fileName));
+        storedInputs.add(String.format("source dump %s %s;", fileName, restoredDatabaseName));
+        // Now check if the table is presents.
+        storedInputs.add(String.format("use %s;", restoredDatabaseName));
+        storedInputs.add("show tables;");
+        storedInputs.add("select * from players;");
+        storedInputs.add("select * from FootballClub;");
         storedInputs.add("q");
         return storedInputs;
     }
