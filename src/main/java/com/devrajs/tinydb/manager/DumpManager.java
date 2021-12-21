@@ -56,6 +56,8 @@ public class DumpManager {
         tableQuery.append(" ");
         tableQuery.append(table.getTableName());
         Map<String, String> columnAndItsTypes = table.getColumnAndItsTypes();
+        List<String> primaryKeys = table.getPrimaryKeyColumns();
+        List<String> foreignKeys = table.getForeignKeysForeignTableAndColumn();
         tableQuery.append("(");
         boolean secondOrLaterColumn = false;
         for (Map.Entry<String, String> entry : columnAndItsTypes.entrySet()) {
@@ -64,7 +66,18 @@ public class DumpManager {
             }
             String columnName = entry.getKey();
             String columnType = entry.getValue();
-            tableQuery.append(String.format("%s %s", columnName, columnType));
+            String pkConstraints = "";
+            if(primaryKeys.contains(columnName)) {
+                pkConstraints = "primary key";
+            }
+            String fkConstraints = "";
+            if(foreignKeys.contains(columnName)) {
+                int i = foreignKeys.indexOf(columnName);
+                String foreignTable = foreignKeys.get(i+1);
+                String foreignColumn = foreignKeys.get(i+2);
+                fkConstraints = String.format("references %s(%s)", foreignTable, foreignColumn);
+            }
+            tableQuery.append(String.format("%s %s %s %s", columnName, columnType, pkConstraints, fkConstraints));
             secondOrLaterColumn = true;
         }
         tableQuery.append(");");
