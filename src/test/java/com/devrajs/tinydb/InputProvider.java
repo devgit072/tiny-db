@@ -38,25 +38,25 @@ public class InputProvider {
                         null));
 
         inputs.add(
-                new TestInput("insert into players('Ronaldo', 30, 'Purtagal', 6.2, true);"
+                new TestInput("insert into players values('Ronaldo', 30, 'Purtagal', 6.2, true);"
                         , null));
         inputs.add(
-                new TestInput("insert into players('Villa', 40, 'Spain', 5.9, false);"
+                new TestInput("insert into players values('Villa', 40, 'Spain', 5.9, false);"
                         , null));
         inputs.add(
-                new TestInput("insert into players('Messi', 28, 'Argentina', 5.8, true);"
+                new TestInput("insert into players values('Messi', 28, 'Argentina', 5.8, true);"
                         , null));
         inputs.add(
-                new TestInput("insert into players('Maradona', 50, 'Argentina', 5.6, true);"
+                new TestInput("insert into players values('Maradona', 50, 'Argentina', 5.6, true);"
                         , null));
         inputs.add(
-                new TestInput("insert into players(Ronaldo, 30, 'Purtagal', 6.2, true);"
+                new TestInput("insert into players values(Ronaldo, 30, 'Purtagal', 6.2, true);"
                         , new ExpectedException(new QuerySyntaxException(), null)));
         inputs.add(
-                new TestInput("insert into players('Ronaldo', abc, 'Purtagal', 6.2, true);"
+                new TestInput("insert into players values('Ronaldo', abc, 'Purtagal', 6.2, true);"
                         , new ExpectedException(new QuerySyntaxException(), null)));
         inputs.add(
-                new TestInput("insert into players('Ronaldo', 30, 'Purtagal', 6.2, yes);"
+                new TestInput("insert into players values('Ronaldo', 30, 'Purtagal', 6.2, yes);"
                         , new ExpectedException(new QuerySyntaxException(), null)));
         inputs.add(
                 new TestInput("select * from players;"
@@ -105,16 +105,16 @@ public class InputProvider {
 
         inputs.add(new TestInput("create table Footballer (footBallerId integer primary key, name string, clubId integer references FootballClub(footballClubId));", null));
 
-        inputs.add(new TestInput("insert into FootballClub(1, 'MadridClub', 'Spain', 1000);", null));
+        inputs.add(new TestInput("insert into FootballClub values(1, 'MadridClub', 'Spain', 1000);", null));
 
-        inputs.add(new TestInput("insert into Footballer(1, 'Nuemar', 1);", null));
+        inputs.add(new TestInput("insert into Footballer values(1, 'Nuemar', 1);", null));
 
         // primary key violation
-        inputs.add(new TestInput("insert into Footballer(1, 'Nuemar', 1);",
+        inputs.add(new TestInput("insert into Footballer values(1, 'Nuemar', 1);",
                 new ExpectedException(new QueryErrorException(), null)));
 
         // Foreign key violations.
-        inputs.add(new TestInput("insert into Footballer(2, 'Messi', 100);",
+        inputs.add(new TestInput("insert into Footballer values(2, 'Messi', 100);",
                 new ExpectedException(new QueryErrorException(), null)));
 
         return inputs.stream();
@@ -124,12 +124,12 @@ public class InputProvider {
         StoredInputs storedInputs = new StoredInputs();
         storedInputs.add(String.format("use %s;", database));
         storedInputs.add("start transaction;");
-        storedInputs.add("insert into players('Blabala1', 30, 'Akha', 6.2, true);");
-        storedInputs.add("insert into players('Glagla1', 40, 'Lakha', 5.9, false);");
+        storedInputs.add("insert into players values('Blabala1', 30, 'Akha', 6.2, true);");
+        storedInputs.add("insert into players values('Glagla1', 40, 'Lakha', 5.9, false);");
         storedInputs.add("commit transaction;");
         storedInputs.add("select * from players;");
         storedInputs.add("start transaction;");
-        storedInputs.add("insert into players('aborted_player', 30, 'aborted', 6.2, true);");
+        storedInputs.add("insert into players values('aborted_player', 30, 'aborted', 6.2, true);");
         storedInputs.add("rollback transaction;");
         storedInputs.add("select * from players;");
         storedInputs.add("q");

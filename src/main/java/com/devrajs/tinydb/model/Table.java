@@ -1,23 +1,20 @@
 package com.devrajs.tinydb.model;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 public class Table implements Serializable {
     String parentDatabase;
     String tableName;
     String tableId;
-    Map<String, String> columnAndItsTypes;
+    LinkedHashMap<String, String> columnAndItsTypes;
     List<String> primaryKeyColumns;
     List<String> foreignKeysForeignTableAndColumn;
 
     public Table() {
     }
 
-    public Table(String tableName, Map<String, String> columnAndItsTypes, List<String> primaryKeyColumns,
+    public Table(String tableName, LinkedHashMap<String, String> columnAndItsTypes, List<String> primaryKeyColumns,
                  List<String> foreignKeysForeignTableAndColumn) {
         this.tableName = tableName;
         this.columnAndItsTypes = columnAndItsTypes;
@@ -34,7 +31,7 @@ public class Table implements Serializable {
         return tableId;
     }
 
-    public Map<String, String> getColumnAndItsTypes() {
+    public LinkedHashMap<String, String> getColumnAndItsTypes() {
         return columnAndItsTypes;
     }
 
@@ -46,7 +43,7 @@ public class Table implements Serializable {
         this.tableId = tableId;
     }
 
-    public void setColumnAndItsTypes(Map<String, String> columnAndItsTypes) {
+    public void setColumnAndItsTypes(LinkedHashMap<String, String> columnAndItsTypes) {
         this.columnAndItsTypes = columnAndItsTypes;
     }
 

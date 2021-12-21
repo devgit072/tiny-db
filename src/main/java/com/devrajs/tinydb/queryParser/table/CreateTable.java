@@ -28,7 +28,7 @@ public class CreateTable {
         String tableName = tokenList.get(index + 2);
         validator.add("(", index + 3).validate();
         int i = index + 4;
-        Map<String, String> columnAndItsTypes = new LinkedHashMap<>();
+        LinkedHashMap<String, String> columnAndItsTypes = new LinkedHashMap<>();
         List<String> primaryKeyColumns = new ArrayList<>();
         List<String> foreignKeysForeignTableAndColumn = new ArrayList<>();
         while (i < tokenList.size()) {

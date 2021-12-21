@@ -23,8 +23,9 @@ public class InsertTable {
         TokensValidator validator = new TokensValidator(tokenList);
         validator.add("insert", index).add("into", index + 1).validate();
         String tableName = tokenList.get(index + 2);
-        validator.add("(", index + 3).validate();
-        int i = index + 4;
+        validator.add("values", index+3).validate();
+        validator.add("(", index + 4).validate();
+        int i = index + 5;
         List<String> columnValues = new ArrayList<>();
         while (i < tokenList.size()) {
             String columnValue = tokenList.get(i++);

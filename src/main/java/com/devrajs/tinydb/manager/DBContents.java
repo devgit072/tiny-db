@@ -80,8 +80,8 @@ public class DBContents {
         }
     }
 
-    private static Map<String, Object> prepareRow(List<String> values, List<String> columns) {
-        Map<String, Object> row = new HashMap<>();
+    private static LinkedHashMap<String, Object> prepareRow(List<String> values, List<String> columns) {
+        LinkedHashMap<String, Object> row = new LinkedHashMap<>();
         if (values.size() != columns.size()) {
             throw new QueryErrorException("Number of columns and values mismatched");
         }
@@ -93,7 +93,7 @@ public class DBContents {
         return row;
     }
 
-    private static List<String> getColumns(Map<String, String> columnAndItsTypes) {
+    private static List<String> getColumns(LinkedHashMap<String, String> columnAndItsTypes) {
         Set<String> columnSet = columnAndItsTypes.keySet();
         return new ArrayList<>(columnSet);
     }
@@ -108,7 +108,7 @@ public class DBContents {
         }
         String tableId = table.getTableId();
         if (isAllColumn) {
-            Map<String, String> columnMap = table.getColumnAndItsTypes();
+            LinkedHashMap<String, String> columnMap = table.getColumnAndItsTypes();
             columns = getColumns(columnMap);
         }
         updateRam();
@@ -141,6 +141,10 @@ public class DBContents {
             String rowsFormatted = Printer.printRow(values);
             System.out.println(rowsFormatted);
         }
+    }
+
+    public TableContent getTableContent(String tableId) {
+        return tableIdToTableContentMap.get(tableId);
     }
 
     public static void updateTable(String tableName, List<Condition> conditions, Operator operator,
